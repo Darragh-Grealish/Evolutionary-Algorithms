@@ -1,6 +1,6 @@
 from __future__ import annotations
 from collections import deque
-from typing import Any, Callable, Generator, Iterable, List, Optional, TypeVar
+from typing import Callable, Generator, Iterable, List, Optional, TypeVar
 
 # Tree.py
 
@@ -118,3 +118,38 @@ class TreeNode:
     def to_tuple(self) -> tuple:
         """Represent subtree as nested tuples: (value, [children...])"""
         return (self.value, [c.to_tuple() for c in self.children])
+
+# test tree implementation
+if __name__ == "__main__":
+
+    # Create a sample tree
+    root = TreeNode("A")
+    b = root.add_child(TreeNode("B"))
+    c = root.add_child(TreeNode("C"))
+    d = b.add_child(TreeNode("D"))
+    e = b.add_child(TreeNode("E"))
+    f = c.add_child(TreeNode("F"))
+
+    # Check traversals
+    print("DFS Iterative:", [node.value for node in root.dfs_iter()])
+    print("DFS Recursive:", [node.value for node in root.dfs_recursive()])
+    print("BFS:", [node.value for node in root.bfs()])
+
+    # Check depth and height
+    print("Depth of D should be 2:", d.depth())
+    print("Height of B should be 1:", b.height())
+    print("Height of root should be 2:", root.height())
+    print("Depth of root should be 0:", root.depth())
+
+    # Check root is root and leaf is leaf
+    print("Is root a root (should be True)", root.is_root())
+    print("Is root a leaf (should be False)", root.is_leaf())
+    print("Is D a leaf (should be True)", d.is_leaf())
+    print("Is D a root (should be False)", d.is_root())
+    print("Is D's parent B (should be True)", d.parent == b)
+
+    # Check size
+    print("Size of tree should be 6:", root.size())
+
+    # Check to_tuple
+    print("Tree as tuple:", root.to_tuple())
