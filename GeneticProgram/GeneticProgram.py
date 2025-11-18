@@ -87,6 +87,27 @@ class GeneticProgram:
             children = [self.grow_tree(max_depth - 1) for _ in range(function.arity)]
             return TreeNode(function, children)
 
+    def evaluate(self, node: TreeNode, input_training_data: Optional[dict] = None) -> float:
+        """Evaluate the tree numerically"""
+
+        input_training_data = input_training_data or {}
+        if node.is_leaf(): # if node is a leaf then we return the value
+            v = node.value
+            if isinstance(v, (int, float)):
+                return v
+            elif isinstance(v, str): # indictaes node holds a variable
+                return float(input_training_data[v]) # return the variables value
+            else:
+                raise TypeError(f"Unsupported terminal type: {type(v)}")
+        else:
+            func: Function = node.value
+            child_vals = [self.evaluate(c, input_training_data) for c in node.children] # recursively evaluate subchildren of node
+            # protect division by zero for safety
+            try:
+                return func.func(*child_vals)
+            except ZeroDivisionError:
+                return float('inf')
+
     def fitness(self, individual):
         # If training data is provided, evaluate the individual on all training samples
         if self.training_data:
@@ -95,14 +116,17 @@ class GeneticProgram:
                 try:
                     pred = self.evaluate(individual, input_vals) # evaluate a set of input values on a tree
                     if not math.isfinite(pred):
+                        print("Tree has encountered divide by zero - returning 0 fitness")
                         return 0.0
                     tree_errors.append((pred - target) ** 2) # add squared error to list
                 except Exception:
                     return 0.0
-            mse = sum(tree_errors) / len(tree_errors) if tree_errors else float('inf')
-            print(f"Average MSE of {mse} from {len(tree_errors)} samples")
-            return 1.0 / (1.0 + mse) # fitness is inverse of MSE, as we want a higher MSE to be worse
-
+            rmse = math.sqrt(sum(tree_errors) / len(tree_errors)) if tree_errors else float('inf')
+            if rmse == 0:
+                print("MSE of 0 - found optimal tree")
+                print(self.parse_tree(individual))
+            print(f"Average MSE of {rmse} from {len(tree_errors)} samples")
+            return 1.0 / (1.0 + rmse) # fitness is inverse of MSE, as we want a higher MSE to be worse
         # Otherwise treat evaluate(individual) as a raw score and map to (0,1) via logistic
         try:
             val = self.evaluate(individual, {}) # empty dict means no input training data, means there should be no variables in the tree
@@ -138,27 +162,6 @@ class GeneticProgram:
             func = node.value
             children_expressions = [self.parse_tree(child) for child in node.children]
             return f"({func.name} {' '.join(children_expressions)})"
-
-    def evaluate(self, node: TreeNode, input_training_data: Optional[dict] = None) -> float:
-        """Evaluate the tree numerically"""
-
-        input_training_data = input_training_data or {}
-        if node.is_leaf(): # if node is a leaf then we return the value
-            v = node.value
-            if isinstance(v, (int, float)):
-                return v
-            elif isinstance(v, str): # indictaes node holds a variable
-                return float(input_training_data[v]) # return the variables value
-            else:
-                raise TypeError(f"Unsupported terminal type: {type(v)}")
-        else:
-            func: Function = node.value
-            child_vals = [self.evaluate(c, input_training_data) for c in node.children] # recursively evaluate subchildren of node
-            # protect division by zero for safety
-            try:
-                return func.func(*child_vals)
-            except ZeroDivisionError:
-                return float('inf')
 
     def sub_tree_crossover(self, parent1: TreeNode, parent2: TreeNode) -> tuple[TreeNode, TreeNode]:
         
@@ -247,11 +250,14 @@ if __name__ == "__main__":
         for i, entry in enumerate(csvFile):
                 if i == 0:
                     continue
-                training_data.append(({'x': entry[0], 'y': entry[1]}, entry[2])) # hard code reading of data from csv and adding it to training data
+                training_data.append(({'x': float(entry[0]), 'y': float(entry[1])}, (float(entry[2])))) # hard code reading of data from csv and adding it to training data
 
-    gp = GeneticProgram(population_size=100, terminal_set=terminal_set, function_set=function_set, max_tree_depth=10)
+    # print(f"training data {training_data}")
+    gp = GeneticProgram(population_size=100, terminal_set=terminal_set, function_set=function_set, max_tree_depth=10, training_data=training_data)
 
     gp.run(generations=100)
+
+    print(f"{len(gp.generation_total_fitness)} values in generations")
 
     plt.plot(range(len(gp.generation_total_fitness)), gp.generation_total_fitness) # TODO add a smoothing process to total generation fitness
     plt.xlabel("Generation Number")
