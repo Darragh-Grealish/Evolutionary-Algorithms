@@ -40,7 +40,7 @@ GE_House_Price/
 
 
 
-## ToDo
+## ToDo/ideas
 
 - [ ] Change crossover from single-point to multi-point or uniform
 - [ ] Implement mutation and dynamic mutation rate based on fitness (stretch goal)
