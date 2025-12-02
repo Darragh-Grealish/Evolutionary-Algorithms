@@ -17,4 +17,4 @@ def load_and_preprocess(csv_path):
     ]
     X = df[features].values
     y = df['price'].values
-    return train_test_split(X, y, test_size=0.2, random_state=1)
+    return train_test_split(X, y, test_size=0.2, random_state=1) # 80% train, 20% test

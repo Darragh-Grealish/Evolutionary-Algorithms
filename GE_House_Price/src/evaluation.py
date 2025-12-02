@@ -2,15 +2,27 @@ import random
 import numpy as np
 from src.grammar import genome_to_expression
 
+def safe_div(a, b):
+    return a / b if b != 0 else 0.0
 
 def evaluate_expression(expr_str, sample):
+    """
+    Evaluate an expression with a single sample
+    """
     safe_dict = {k: sample[i] for i, k in enumerate([
         'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors',
         'waterfront', 'view', 'condition', 'sqft_above', 'sqft_basement',
         'yr_built', 'yr_renovated', 'city_num', 'statezip_num', 'country_num'
     ])}
+
+    safe_dict["__builtins__"] = None
+    safe_dict["sd"] = safe_div
+
+    # replace `/` with `sd(...)` form
+    expr_str = expr_str.replace('/', ' sd ')
+    
     try:
-        result = eval(expr_str, {"__builtins__": None}, safe_dict)
+        result = eval(expr_str, {}, safe_dict)
         return float(result)
     except Exception:
         return 0.0 # populate with blank flaot

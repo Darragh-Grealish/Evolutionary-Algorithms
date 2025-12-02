@@ -6,7 +6,7 @@ from src.evaluation import fitness, random_genome, crossover, mutate
 
 def run_ge(X, y, pop_size, generations, genome_len, max_depth):
     grammar = parse_bnf()
-    population = [random_genome(genome_len) for _ in range(pop_size)]
+    population = [random_genome(genome_len) for _ in range(pop_size)] # genome is random list of 100 integers
     for gen in range(generations):
         fitnesses = [fitness(g, grammar, X, y, max_depth) for g in population]
         idxs = np.argsort(fitnesses)
