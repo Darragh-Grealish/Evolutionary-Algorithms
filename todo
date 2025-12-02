@@ -1,4 +1,3 @@
 1. Make min depth 2
-2. All expressions should be fully filled out
-3. Get rid of divide by zero errors
-4. Sensible initialisation from paper
+2. Sensible initialisation from paper
+3. Parallelise / optimise code - currently bottleneck in is evaluating fitness in this line -> fitnesses = [fitness(g, X, y, cfg.max_depth) for g in population]

@@ -6,27 +6,24 @@ def tokenize(rule):
     parts = pattern.split(rule)
     return [p for p in parts if p.strip()]
 
-
-def parse_bnf():
-    grammar = {
-        '<expr>': [
-            '<expr> <op> <expr>',
-            '(<expr> <op> <expr>)',
-            '<var>',
-            '<st>'
-        ],
-        '<op>': ['+', '-', '*', '/'],
-        '<var>': [
-            'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 
-            'waterfront', 'view', 'condition', 'sqft_above', 'sqft_basement', 
-            'yr_built', 'yr_renovated', 'city_num', 'statezip_num', 'country_num'
-        ],
-        '<st>': ['1', '2', '3', '5', '10', '100']
-    }
-    return grammar
+grammar = {
+    '<expr>': [
+        '<expr> <op> <expr>',
+        '(<expr> <op> <expr>)',
+        '<var>',
+        '<st>'
+    ],
+    '<op>': ['+', '-', '*', '/'],
+    '<var>': [
+        'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 
+        'waterfront', 'view', 'condition', 'sqft_above', 'sqft_basement', 
+        'yr_built', 'yr_renovated', 'city_num', 'statezip_num', 'country_num'
+    ],
+    '<st>': [f"{i}" for i in range(0, 50)]
+}
 
 
-def genome_to_expression(genome, grammar, max_depth, start='<expr>'):
+def genome_to_expression(genome, max_depth, start='<expr>'):
     codon_index = 0
     current_depth = 0
 

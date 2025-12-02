@@ -1,0 +1,12 @@
+{
+    "generations": 3,
+    "population_size": 100,
+    "genome_length": 100,
+    "max_depth": 10,
+    "evol_options": {
+        "elitism_percentage": 0.2,
+        "parent_selection_size": 0.1,
+        "crossover_rate": 0.7,
+        "mutation_rate": 0.1
+    }   
+}

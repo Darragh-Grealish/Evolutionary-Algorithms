@@ -27,8 +27,8 @@ def evaluate_expression(expr_str, sample):
     except Exception:
         return 0.0 # populate with blank flaot
 
-def fitness(genome, grammar, X, y, max_depth):
-    expr_str = genome_to_expression(genome, grammar, max_depth)
+def fitness(genome, X, y, max_depth):
+    expr_str = genome_to_expression(genome, max_depth)
     preds = [evaluate_expression(expr_str, features) for features in X]
     preds = np.array(preds)
     return np.sqrt(np.mean((preds - y) ** 2))
