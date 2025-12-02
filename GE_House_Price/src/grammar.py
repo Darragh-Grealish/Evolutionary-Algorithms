@@ -1,4 +1,11 @@
-import random
+import random, re
+
+pattern = re.compile(r'(<[^<>]+>)')
+
+def tokenize(rule):
+    parts = pattern.split(rule)
+    return [p for p in parts if p.strip()]
+
 
 def parse_bnf():
     grammar = {
@@ -28,7 +35,7 @@ def genome_to_expression(genome, grammar, max_depth, start='<expr>'):
         if depth > max_depth:
             # Force a terminal rule if possible: [TODO: Need to change so it's based on Max Depth as apposed to forcing a Terminal]
             if symbol == '<expr>':
-                # Pick a random terminal ('<var>' or '<st>')
+                # Pick a random terminal ('<var>' or '<st>') - we ensure it does not recurse further
                 term_rule = random.choice(['<var>', '<st>'])
                 return expand(term_rule, depth + 1)
             if symbol in ['<var>', '<st>']:
@@ -44,7 +51,7 @@ def genome_to_expression(genome, grammar, max_depth, start='<expr>'):
         selected_rule = rules[rule_i]
 
         output = ''
-        for token in selected_rule.split():
+        for token in tokenize(selected_rule):
             if token in grammar:
                 output += expand(token, depth + 1)
             else:
