@@ -18,6 +18,8 @@ class EvolutionConfig:
         self.parent_selection_size = opts.get("parent_selection_size", 0.1)
         self.crossover_rate = opts.get("crossover_rate", 0.7)
         self.mutation_rate = opts.get("mutation_rate", 0.1)
+        self.min_mutation_rate = opts.get("min_mutation_rate", 0.01)
+        self.max_mutation_rate = opts.get("max_mutation_rate", 0.5)
 
     @property
     def elitism_count(self):
