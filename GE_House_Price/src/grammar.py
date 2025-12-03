@@ -1,4 +1,4 @@
-import random, re
+import random, re, os
 
 pattern = re.compile(r'(<[^<>]+>)')
 
@@ -6,53 +6,47 @@ def tokenize(rule):
     parts = pattern.split(rule)
     return [p for p in parts if p.strip()]
 
-grammar = {
-    '<expr>': [
-        '<expr> <op> <expr>',
-        '(<expr> <op> <expr>)',
-        '<var>',
-        '<st>'
-    ],
-    '<op>': ['+', '-', '*', '/'],
-    '<var>': [
-        'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors', 
-        'waterfront', 'view', 'condition', 'sqft_above', 'sqft_basement', 
-        'yr_built', 'yr_renovated', 'city_num', 'statezip_num', 'country_num'
-    ],
-    '<st>': [f"{i}" for i in range(0, 50)]
-}
+def parse_bnf_file(path="grammar/houseprice.bnf"):
+    grammar = {}
+    if not os.path.isabs(path):
+        base = os.path.dirname(os.path.dirname(__file__))
+        path = os.path.join(base, path)
+    with open(path, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"): 
+                continue
+            if "::=" not in line: 
+                continue
+            lhs, rhs = line.split("::=", 1)
+            lhs = lhs.strip()
+            productions = [p.strip() for p in rhs.split("|")]
+            grammar[lhs] = productions
+    return grammar
+
+
+grammar = parse_bnf_file()
 
 
 def genome_to_expression(genome, max_depth, start='<expr>'):
     codon_index = 0
-    current_depth = 0
-
     def expand(symbol, depth):
         nonlocal codon_index
         if depth > max_depth:
-            # Force a terminal rule if possible: [TODO: Need to change so it's based on Max Depth as apposed to forcing a Terminal]
             if symbol == '<expr>':
-                # Pick a random terminal ('<var>' or '<st>') - we ensure it does not recurse further
-                term_rule = random.choice(['<var>', '<st>'])
-                return expand(term_rule, depth + 1)
-            if symbol in ['<var>', '<st>']:
+                return expand(random.choice(['<var>', '<st>']), depth+1)
+            if symbol in grammar:
                 rules = grammar[symbol]
-                rule_i = genome[codon_index % len(genome)] % len(rules)
+                i = genome[codon_index % len(genome)] % len(rules)
                 codon_index += 1
-                return rules[rule_i]
+                return rules[i]
             return ''
-        
         rules = grammar[symbol]
-        rule_i = genome[codon_index % len(genome)] % len(rules)
+        i = genome[codon_index % len(genome)] % len(rules)
         codon_index += 1
-        selected_rule = rules[rule_i]
-
-        output = ''
-        for token in tokenize(selected_rule):
-            if token in grammar:
-                output += expand(token, depth + 1)
-            else:
-                output += token
-            output += ' '
-        return output.strip()
+        selected = rules[i]
+        out = []
+        for tok in tokenize(selected):
+            out.append(expand(tok, depth+1) if tok in grammar else tok)
+        return ' '.join(out).strip()
     return expand(start, 0)
