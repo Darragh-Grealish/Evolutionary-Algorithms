@@ -1,7 +1,7 @@
 {
     "generations": 3,
-    "population_size": 100,
-    "genome_length": 100,
+    "population_size": 400,
+    "genome_length": 300,
     "max_depth": 10,
     "evol_options": {
         "elitism_percentage": 0.2,

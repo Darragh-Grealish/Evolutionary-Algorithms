@@ -2,6 +2,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import mean_absolute_error
 
+def plot_generation_times(generation_times):
+    plt.figure(figsize=(10, 5))
+    plt.plot(range(len(generation_times)), generation_times, marker='o')
+    plt.title('Generation Times Over Generations')
+    plt.xlabel('Generation')
+    plt.ylabel('Time (seconds)')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
 def plot_results(y_test, y_pred, show_mae=True):
     y_test = np.array(y_test)
     y_pred = np.array(y_pred)

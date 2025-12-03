@@ -1,12 +1,13 @@
-import numpy as np
-import random
+import numpy as np, random, time, secrets
 from src.grammar import genome_to_expression
-from src.evaluation import fitness, random_genome, crossover, mutate
-
+from src.evaluation import fitness, random_genome, crossover, mutate, expr_cache, fitness_cache
+from src.visualisation import plot_generation_times
 
 def run_ge(X, y, cfg):
+    generation_times = []
     population = [random_genome(cfg.genome_length) for _ in range(cfg.population_size)] # genome is random list of 100 integers
     for gen in range(cfg.generations):
+        start = time.perf_counter()
         fitnesses = [fitness(g, X, y, cfg.max_depth) for g in population]
         idxs = np.argsort(fitnesses)
         population = [population[i] for i in idxs] # sort by fitness
@@ -25,7 +26,15 @@ def run_ge(X, y, cfg):
             c2 = mutate(c2)
             new_pop.extend([c1, c2])
         population = new_pop[:cfg.population_size]
+        print(f"Generation {gen} completed in {time.perf_counter() - start:.4f}s")
+        generation_times.append(time.perf_counter() - start)
     # Return best genome & expression
     best_g = population[0]
     best_expr = genome_to_expression(best_g, cfg.max_depth)    
+    print(f"Expr cache size: {len(expr_cache)}, Fitness cache size: {len(fitness_cache)}")
+    
+    plot_generation_times(generation_times)
+    # Clear caches as next step will be evaluating fitness on test set
+    expr_cache.clear()
+    fitness_cache.clear()
     return best_g, best_expr
