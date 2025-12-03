@@ -15,12 +15,13 @@ def run_ge(X, y, cfg):
         best_expr_str = genome_to_expression(population[0], cfg.max_depth)
         print(f"Gen {gen}: Best Fitness {fitnesses[idxs[0]]:.2f} Expr: {best_expr_str}")
         
-        # Elitism
-        new_pop = population[:cfg.elitism_count]
+        # Elitism - carry top individuals to next generation (unchanged)
+        new_pop = population[:cfg.elitism_count] 
+        parents = population[:cfg.top_parents_count]
         # Generate rest of new pop with crossover/mutation
         while len(new_pop) < cfg.population_size:
-            p1 = random.choice(population[:cfg.top_parents_count]) # select from top parents
-            p2 = random.choice(population[:cfg.top_parents_count])
+            p1 = random.choice(parents) # select from top parents
+            p2 = random.choice(parents)
             c1, c2 = crossover(p1, p2)
             c1 = mutate(c1)
             c2 = mutate(c2)

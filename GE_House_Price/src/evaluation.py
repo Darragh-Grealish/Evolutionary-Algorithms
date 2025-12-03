@@ -3,8 +3,8 @@ import numpy as np
 from src.grammar import genome_to_expression
 
 # --- GLOBAL CACHES ---
-expr_cache = {}
-fitness_cache = {}
+expr_cache = {} # map genome to expression
+fitness_cache = {} # map expression to fitness
 
 def safe_div(a, b):
     return a / b if b != 0 else 0.0
@@ -33,18 +33,17 @@ def evaluate_expression(expr_str, sample):
 
 def get_expr(genome, max_depth):
     key = tuple(genome)
-    if key not in expr_cache: # new genome, need to built expression from scratch
+    if key not in expr_cache: # new genome, need to build expression from scratch
         expr_cache[key] = genome_to_expression(genome, max_depth)
     return expr_cache[key]
 
 def fitness(genome, X, y, max_depth):
-    key = tuple(genome) # convert list to immutable tuple so it can be used as dict key
-    if key not in fitness_cache: # new genome, not evaluated before
-        expr_str = get_expr(genome, max_depth)
-        preds = [evaluate_expression(expr_str, f) for f in X]
+    expr = get_expr(genome, max_depth)
+    if expr not in fitness_cache: # new expression, not evaluated before
+        preds = [evaluate_expression(expr, f) for f in X]
         preds = np.array(preds)
-        fitness_cache[key] = np.sqrt(np.mean((preds - y)**2))
-    return fitness_cache[key]
+        fitness_cache[expr] = np.sqrt(np.mean((preds - y)**2))
+    return fitness_cache[expr]
 
 def random_genome(length=20):
     return [random.randint(0, 255) for _ in range(length)]

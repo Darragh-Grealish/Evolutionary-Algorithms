@@ -1,3 +1,6 @@
 1. Make min depth 2
 2. Sensible initialisation from paper
 3. Parallelise / optimise code - currently bottleneck in is evaluating fitness in this line -> fitnesses = [fitness(g, X, y, cfg.max_depth) for g in population]
+4. Need to debug deterministic cache size - check if cache values are the same every run (save cache after run 1, compare to cache after run 1 in next run)
+5. Could it be that first 400 are new, then in next run, 320 are new (-20% elitism) and so on. Then everything else added is new?
+6. Need to add in sin, cos , log, exp functions
