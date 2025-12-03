@@ -45,14 +45,37 @@ def fitness(genome, X, y, max_depth):
         fitness_cache[expr] = np.sqrt(np.mean((preds - y)**2))
     return fitness_cache[expr]
 
-def random_genome(length=20):
+def random_genome(length):
     return [random.randint(0, 255) for _ in range(length)]
 
-def mutate(genome, mutation_rate=0.1):
+def get_dynamic_mutation_rate(best_fitness, worst_fitness, min_rate, max_rate):
+    # avoid division by zero or negative scales
+    if worst_fitness <= 0:
+        return max_rate
+
+    # progress score: 0 = no progress, 1 = big improvement
+    s = (worst_fitness - best_fitness) / worst_fitness
+    s = max(0.0, min(1.0, s))  # clamp to [0, 1]
+
+    # interpolate: when s=0 -> max_rate, when s=1 -> min_rate
+    return max_rate - s * (max_rate - min_rate)
+
+def mutate(genome, mutation_rate):
     return [g if random.random() > mutation_rate else random.randint(0, 255) for g in genome]
 
-def crossover(parent1, parent2):
-    point = random.randint(1, len(parent1)-1)
-    child1 = parent1[:point] + parent2[point:]
-    child2 = parent2[:point] + parent1[point:]
+# uniform crossover
+def crossover(parent1, parent2, crossover_rate):
+    child1 = []
+    child2 = []
+    
+    for g1, g2 in zip(parent1, parent2):
+        if random.random() < crossover_rate:
+            # parent1->child1, parent2->child2
+            child1.append(g1)
+            child2.append(g2)
+        else:
+            # parent2->child1, parent1->child2
+            child1.append(g2)
+            child2.append(g1)
+    
     return child1, child2
