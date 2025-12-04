@@ -3,8 +3,12 @@ from sklearn.model_selection import train_test_split
 
 def load_and_preprocess(csv_path):
     df = pd.read_csv(csv_path)
-    # drop missing values
+
     df = df.dropna()
+
+    # remove where price == 0 or price > 1.5 million
+    df = df[(df['price'] > 0) & (df['price'] <= 1_500_000)]
+
     # encode categorical features
     df['city_num'] = df['city'].astype('category').cat.codes
     df['statezip_num'] = df['statezip'].astype('category').cat.codes
@@ -12,7 +16,7 @@ def load_and_preprocess(csv_path):
 
     features = [
         'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors',
-        'waterfront', 'view', 'condition', 'sqft_above', 'sqft_basement',
+        'view', 'condition', 'sqft_above', 'sqft_basement',
         'yr_built', 'yr_renovated', 'city_num', 'statezip_num', 'country_num'
     ]
     X = df[features].values

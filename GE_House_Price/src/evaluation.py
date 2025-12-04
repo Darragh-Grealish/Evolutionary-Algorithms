@@ -15,7 +15,7 @@ def evaluate_expression(expr_str, sample):
     """
     safe_dict = {k: sample[i] for i, k in enumerate([
         'bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors',
-        'waterfront', 'view', 'condition', 'sqft_above', 'sqft_basement',
+        'view', 'condition', 'sqft_above', 'sqft_basement',
         'yr_built', 'yr_renovated', 'city_num', 'statezip_num', 'country_num'
     ])}
 
@@ -38,7 +38,8 @@ def get_expr(genome, max_depth):
     return expr_cache[key]
 
 def fitness(genome, X, y, max_depth):
-    expr = get_expr(genome, max_depth)
+    # expr = get_expr(genome, max_depth)
+    expr = genome_to_expression(genome, max_depth)
     if expr not in fitness_cache: # new expression, not evaluated before
         preds = [evaluate_expression(expr, f) for f in X]
         preds = np.array(preds)
