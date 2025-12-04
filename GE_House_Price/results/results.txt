@@ -1,0 +1,3 @@
+Gen 49: Best Fitness 186778.11 Expr: ( 1 + 10 ) * ( 10 * ( ( city_num * 10 + sqft_living ) * 2 ) )
+  Dynamic mutation rate this gen: 0.0500
+Generation 49 completed in 10.7241s
