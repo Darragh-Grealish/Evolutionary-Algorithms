@@ -1,13 +1,32 @@
-import random
-import numpy as np
-from src.grammar import genome_to_expression
+import random, numpy as np, time
 
-# --- GLOBAL CACHES ---
-expr_cache = {} # map genome to expression
 fitness_cache = {} # map expression to fitness
 
 def safe_div(a, b):
     return a / b if b != 0 else 0.0
+
+def evaluate_population(population, X, y, cfg):
+    for genome in population:
+        start = time.time()
+
+        # Use existing phenotype if available
+        expr = genome.get('phenotype')
+        if expr is None:
+            print("Error: Phenotype missing")
+
+        key = tuple(genome['genotype'])
+
+        # --- Fitness (cached) ---
+        fit = fitness_cache.get(expr)
+        if fit is None:
+            preds = np.array([evaluate_expression(expr, s) for s in X])
+            fit = np.sqrt(np.mean((preds - y) ** 2))
+            fitness_cache[expr] = fit
+
+        genome['fitness'] = fit
+        genome['eval_time'] = time.time() - start
+
+    return population
 
 def evaluate_expression(expr_str, sample):
     """
@@ -29,6 +48,7 @@ def evaluate_expression(expr_str, sample):
         result = eval(expr_str, {}, safe_dict)
         return float(result)
     except Exception:
+        # print("Error evaluating expression:", expr_str)
         return 0.0 # populate with blank flaot
 
 def get_expr(genome, max_depth):
@@ -40,9 +60,11 @@ def get_expr(genome, max_depth):
 def fitness(genome, X, y, max_depth):
     # expr = get_expr(genome, max_depth)
     expr = genome_to_expression(genome, max_depth)
+    print(f"Expr {expr}")
     if expr not in fitness_cache: # new expression, not evaluated before
         preds = [evaluate_expression(expr, f) for f in X]
         preds = np.array(preds)
+        print(f"Predictions: {preds[:20]}")
         fitness_cache[expr] = np.sqrt(np.mean((preds - y)**2))
     return fitness_cache[expr]
 

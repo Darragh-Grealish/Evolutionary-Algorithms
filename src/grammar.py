@@ -1,52 +1,119 @@
 import random, re, os
+from typing import List, Dict
 
-pattern = re.compile(r'(<[^<>]+>)')
+Symbol = str
+Production = List[Symbol]
+Grammar = Dict[Symbol, List[Production]]
 
-def tokenize(rule):
-    parts = pattern.split(rule)
-    return [p for p in parts if p.strip()]
+GRAMMAR = {
+    "start": [["expr"]],
+    "expr": [
+        ["expr", "op", "expr"],
+        ["(", "expr", "op", "expr", ")"],
+        ["pre_op", "(", "expr", ")"],
+        ["var"]
+    ],
+    "op": [["+"], ["-"], ["*"], ["/"]],
+    "pre_op": [["sin"], ["cos"], ["exp"], ["inv"], ["log"]],
+    "var": [["x"], ["1.0"]]
+}
 
-def parse_bnf_file(path="grammar/houseprice.bnf"):
-    grammar = {}
-    if not os.path.isabs(path):
-        base = os.path.dirname(os.path.dirname(__file__))
-        path = os.path.join(base, path)
-    with open(path, "r") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"): 
-                continue
-            if "::=" not in line: 
-                continue
-            lhs, rhs = line.split("::=", 1)
-            lhs = lhs.strip()
-            productions = [p.strip() for p in rhs.split("|")]
-            grammar[lhs] = productions
-    return grammar
+genome_to_expression_cache = {}
 
+def is_recursive(nt, prod):
+    return nt in prod # return true is LHS is in RHS
 
-grammar = parse_bnf_file()
+def choose_production(grammar, nt, depth, max_depth):
+    """
+    Choose a production rule index for a non-terminal
+    """
+    prods = grammar[nt] # get all posible productions for this non-terminal
+    if depth >= max_depth: # at max depth, avoid recursive productions
+        nonrec = [i for i,p in enumerate(prods) if not is_recursive(nt, p)]
+        return random.choice(nonrec) if nonrec else random.randrange(len(prods))
+    return random.randrange(len(prods)) # otherwise choose any production
 
+def initialise_individual(grammar, axiom, max_depth, rng=random):
+    """
+    Create a random genotype by expanding the grammar from the axiom
+    """
+    genotype = []
 
-def genome_to_expression(genome, max_depth, start='<expr>'):
-    codon_index = 0
-    def expand(symbol, depth):
-        nonlocal codon_index
-        if depth > max_depth:
-            if symbol == '<expr>':
-                return expand(random.choice(['<var>', '<st>']), depth+1)
-            if symbol in grammar:
-                rules = grammar[symbol]
-                i = genome[codon_index % len(genome)] % len(rules)
-                codon_index += 1
-                return rules[i]
-            return ''
-        rules = grammar[symbol]
-        i = genome[codon_index % len(genome)] % len(rules)
-        codon_index += 1
-        selected = rules[i]
-        out = []
-        for tok in tokenize(selected):
-            out.append(expand(tok, depth+1) if tok in grammar else tok)
-        return ' '.join(out).strip()
-    return expand(start, 0)
+    def expand(nt, depth):
+        idx = choose_production(grammar, nt, depth, max_depth)
+        genotype.append(idx) # append index of chosen production
+        prod = grammar[nt][idx]
+        for sym in prod:
+            if sym in grammar: # recursively built out non-terminals
+                expand(sym, depth+1)
+
+    expand(axiom, 0)
+    return genotype # genotype is list of production indices
+
+def map_genotype(grammar, genotype, axiom, max_depth, rng=random):
+    """
+    Map a genotype (list of production indices) to a phenotype (expression)
+    """
+    out = []
+    read_pos = 0
+
+    if tuple(genotype) in genome_to_expression_cache:
+        return genotype, genome_to_expression_cache[tuple(genotype)]
+
+    def expand(nt, depth):
+        nonlocal read_pos
+
+        prods = grammar[nt]
+
+        if read_pos < len(genotype):
+            idx = genotype[read_pos] % len(prods)
+            read_pos += 1
+        else:
+            idx = choose_production(grammar, nt, depth, max_depth)
+            genotype.append(idx)
+            read_pos += 1
+
+        prod = prods[idx]
+        for sym in prod:
+            if sym in grammar:
+                expand(sym, depth+1)
+            else:
+                out.append(sym)
+
+    expand(axiom, 0)
+    genome_to_expression_cache[tuple(genotype)] = ''.join(out) # add mapping to cache
+    return genotype, ''.join(out)
+
+def initialise_population(config, axiom="start", rng=random):
+    """
+    Create a list of individuals, each a dict:
+        { 'genotype': [...], 'phenotype': [...], 'fitness': None }
+    """
+    population = []
+
+    for _ in range(config.population_size):
+        genotype = initialise_individual(
+            grammar=GRAMMAR,
+            axiom=axiom,
+            max_depth=config.max_depth,
+            rng=rng
+        )
+
+        genotype, phenotype = map_genotype(
+            grammar=GRAMMAR,
+            genotype=genotype,
+            axiom=axiom,
+            max_depth=config.max_depth,
+            rng=rng
+        )
+
+        individual = {
+            "genotype": genotype,
+            "phenotype": phenotype,
+            "fitness": None
+        }
+
+        population.append(individual)
+
+    return population
+
