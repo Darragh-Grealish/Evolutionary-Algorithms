@@ -1,10 +1,12 @@
 import random, re, os
 from typing import List, Dict
+from src.models import TreeNode
 
 Symbol = str
 Production = List[Symbol]
 Grammar = Dict[Symbol, List[Production]]
 
+# Defining grammar like such allows easy check for recursive productions
 GRAMMAR = {
     "start": [["expr"]],
     "expr": [
@@ -15,7 +17,12 @@ GRAMMAR = {
     ],
     "op": [["+"], ["-"], ["*"], ["/"]],
     "pre_op": [["sin"], ["cos"], ["exp"], ["inv"], ["log"]],
-    "var": [["x"], ["1.0"]]
+    "var": [
+        ["bedrooms"], ["bathrooms"], ["sqft_living"], ["sqft_lot"], ["floors"],
+        ["view"], ["condition"], ["sqft_above"], ["sqft_basement"],
+        ["yr_built"], ["yr_renovated"], ["city_num"], ["statezip_num"], ["country_num"],
+        ["1.0"]
+    ]
 }
 
 genome_to_expression_cache = {}
@@ -35,54 +42,110 @@ def choose_production(grammar, nt, depth, max_depth):
 
 def initialise_individual(grammar, axiom, max_depth, rng=random):
     """
-    Create a random genotype by expanding the grammar from the axiom
+    Create a structured genotype: dict mapping non-terminals to lists of chosen productions.
+    This aligns with DSGE where each non-terminal has its own gene list.
     """
-    genotype = []
+    genotype = {nt: [] for nt in grammar.keys()}
 
     def expand(nt, depth):
         idx = choose_production(grammar, nt, depth, max_depth)
-        genotype.append(idx) # append index of chosen production
+        genotype[nt].append(idx)
         prod = grammar[nt][idx]
         for sym in prod:
             if sym in grammar: # recursively built out non-terminals
                 expand(sym, depth+1)
 
     expand(axiom, 0)
-    return genotype # genotype is list of production indices
+    return genotype # genotype is dict of lists of production indices for each non-terminal
 
 def map_genotype(grammar, genotype, axiom, max_depth, rng=random):
     """
-    Map a genotype (list of production indices) to a phenotype (expression)
+    Map a genotype (list of production indices) to a phenotype tree (TreeNode).
+    The grammar determines arity: 'op' is binary, 'pre_op' is unary, 'var' and literals are terminals.
     """
-    out = []
-    read_pos = 0
+    # read positions index for each non-terminal's gene list
+    cursors = {nt: 0 for nt in grammar.keys()}
 
-    if tuple(genotype) in genome_to_expression_cache:
-        return genotype, genome_to_expression_cache[tuple(genotype)]
+    # key for cache is tuple of all non-terminals and their production indices
+    key = tuple((nt, tuple(genotype.get(nt, []))) for nt in sorted(grammar.keys()))
+    if key in genome_to_expression_cache: # we have already mapped this genotype
+        return genotype, genome_to_expression_cache[key]
 
     def expand(nt, depth):
-        nonlocal read_pos
 
-        prods = grammar[nt]
-
-        if read_pos < len(genotype):
-            idx = genotype[read_pos] % len(prods)
-            read_pos += 1
+        prods = grammar[nt] # get productions for this non-terminal
+        cur = cursors[nt]   # current read position in gene list for this non-terminal (this tells us what rule to choose)
+        if cur < len(genotype.get(nt, [])):
+            idx = genotype[nt][cur] % len(prods)
+            cursors[nt] += 1
         else:
+            print("Error : genotype exhausted for non-terminal", nt) # not enough rules chosen for this rule
             idx = choose_production(grammar, nt, depth, max_depth)
-            genotype.append(idx)
-            read_pos += 1
+            genotype.setdefault(nt, []).append(idx)
+            cursors[nt] += 1
 
         prod = prods[idx]
-        for sym in prod:
-            if sym in grammar:
-                expand(sym, depth+1)
-            else:
-                out.append(sym)
 
-    expand(axiom, 0)
-    genome_to_expression_cache[tuple(genotype)] = ''.join(out) # add mapping to cache
-    return genotype, ''.join(out)
+        # Build subtree according to the production
+        # Productions are sequences of symbols; we recursively expand non-terminals
+        nodes = []
+        for sym in prod:
+            if sym in grammar: # non-terminal
+                nodes.append(expand(sym, depth+1))
+            else: # terminal
+                nodes.append(TreeNode(sym))
+
+        # Collapse parentheses patterns like ["(", expr, op, expr, ")"] into op node
+        if nt == "expr":
+            # Handle parenthesized binary
+            if len(nodes) == 5 and nodes[0].symbol == "(" and nodes[4].symbol == ")":
+                left = nodes[1]
+                op = nodes[2]
+                right = nodes[3]
+                return TreeNode(op.symbol, [left, right])
+
+            # Handle unary pre_op with parentheses
+            if len(nodes) == 4 and nodes[1].symbol == "(" and nodes[3].symbol == ")":
+                pre = nodes[0]
+                arg = nodes[2]
+                return TreeNode(pre.symbol, [arg])
+
+            # Handle direct binary: expr op expr
+            if len(nodes) == 3 and nodes[1].symbol in ['+', '-', '*', '/']:
+                left = nodes[0]
+                op = nodes[1]
+                right = nodes[2]
+                return TreeNode(op.symbol, [left, right])
+
+            # Handle var
+            if len(nodes) == 1:
+                return nodes[0]
+
+            # Fallback: create a sequence node
+            return TreeNode("seq", nodes)
+
+        if nt == "op":
+            # op produces a single terminal operator
+            return nodes[0]
+
+        if nt == "pre_op":
+            # pre_op produces a single terminal pre-operator
+            return nodes[0]
+
+        if nt == "var":
+            # var produces a single terminal variable/literal
+            return nodes[0]
+
+        if nt == "start":
+            # start -> expr, unwrap to return the expression tree directly
+            return nodes[0] if nodes else TreeNode("seq", [])
+
+        # Default: pack nodes as sequence
+        return TreeNode(nt, nodes)
+
+    tree = expand(axiom, 0)
+    genome_to_expression_cache[key] = tree  # cache tree phenotype
+    return genotype, tree
 
 def initialise_population(config, axiom="start", rng=random):
     """
@@ -117,3 +180,36 @@ def initialise_population(config, axiom="start", rng=random):
 
     return population
 
+def mutate_genotype(genotype, max_depth, mutation_rate, rng=random):
+    """
+    Mutate a structured genotype by randomly changing production indices.
+    Each gene (production index) has a chance to be mutated based on mutation_rate.
+    """
+    new_genotype = {nt: list(genes) for nt, genes in genotype.items()}
+
+    for nt, genes in new_genotype.items():
+        for i in range(len(genes)):
+            if rng.random() < mutation_rate:
+                # Mutate this gene by choosing a new production index
+                old_idx = genes[i]
+                new_idx = choose_production(grammar, nt, 0, max_depth)
+                while new_idx == old_idx and len(grammar[nt]) > 1:
+                    new_idx = choose_production(grammar, nt, 0, max_depth)
+                genes[i] = new_idx
+
+    return new_genotype
+
+if __name__ == "__main__":
+    # Example usage
+    cfg = EvolutionConfig("config.json")
+    pop = initialise_population(cfg)
+    genotype = {
+        'start': [0],
+        'expr': [0, 3, 0, 1, 0],
+        'op': [2, 0],
+        'pre_op': [1],
+        'var': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    }
+    for ind in pop[:3]:  # print first 3 individuals
+        print("Genotype:", ind['genotype'])
+        print("Phenotype:", ind['phenotype'])

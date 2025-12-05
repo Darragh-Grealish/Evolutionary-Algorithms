@@ -9,5 +9,27 @@
         "crossover_rate": 0.7,
         "min_mutation_rate": 0.05,
         "max_mutation_rate": 0.3
-    }   
+    },
+    "feature_names": [
+        "bedrooms", "bathrooms", "sqft_living", "sqft_lot", "floors",
+        "view", "condition", "sqft_above", "sqft_basement",
+        "yr_built", "yr_renovated", "city_num", "statezip_num", "country_num"
+    ],
+    "grammar": {
+        "start": [["expr"]],
+        "expr": [
+            ["expr", "op", "expr"],
+            ["(", "expr", "op", "expr", ")"],
+            ["pre_op", "(", "expr", ")"],
+            ["var"]
+        ],
+        "op": [["+"], ["-"], ["*"], ["/"]],
+        "pre_op": [["sin"], ["cos"], ["exp"], ["inv"], ["log"]],
+        "var": [
+            ["bedrooms"], ["bathrooms"], ["sqft_living"], ["sqft_lot"], ["floors"],
+            ["view"], ["condition"], ["sqft_above"], ["sqft_basement"],
+            ["yr_built"], ["yr_renovated"], ["city_num"], ["statezip_num"], ["country_num"],
+            ["1.0"]
+        ]
+    }
 }
