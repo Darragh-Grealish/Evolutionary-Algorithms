@@ -69,7 +69,7 @@ def map_genotype(grammar, genotype, axiom, max_depth, rng=random):
     # key for cache is tuple of all non-terminals and their production indices
     key = tuple((nt, tuple(genotype.get(nt, []))) for nt in sorted(grammar.keys()))
     if key in genome_to_expression_cache: # we have already mapped this genotype
-        return genotype, genome_to_expression_cache[key]
+        return genome_to_expression_cache[key]
 
     def expand(nt, depth):
 
@@ -79,7 +79,7 @@ def map_genotype(grammar, genotype, axiom, max_depth, rng=random):
             idx = genotype[nt][cur] % len(prods)
             cursors[nt] += 1
         else:
-            print("Error : genotype exhausted for non-terminal", nt) # not enough rules chosen for this rule
+            # Dynamically extend gene list for this non-terminal when exhausted (DSGE behavior)
             idx = choose_production(grammar, nt, depth, max_depth)
             genotype.setdefault(nt, []).append(idx)
             cursors[nt] += 1
@@ -144,8 +144,10 @@ def map_genotype(grammar, genotype, axiom, max_depth, rng=random):
         return TreeNode(nt, nodes)
 
     tree = expand(axiom, 0)
-    genome_to_expression_cache[key] = tree  # cache tree phenotype
-    return genotype, tree
+    # cache using the final, possibly-extended genotype
+    final_key = tuple((nt, tuple(genotype.get(nt, []))) for nt in sorted(grammar.keys()))
+    genome_to_expression_cache[final_key] = tree
+    return tree
 
 def initialise_population(config, axiom="start", rng=random):
     """
@@ -162,54 +164,12 @@ def initialise_population(config, axiom="start", rng=random):
             rng=rng
         )
 
-        genotype, phenotype = map_genotype(
-            grammar=GRAMMAR,
-            genotype=genotype,
-            axiom=axiom,
-            max_depth=config.max_depth,
-            rng=rng
-        )
-
         individual = {
             "genotype": genotype,
-            "phenotype": phenotype,
+            "phenotype": None,
             "fitness": None
         }
 
         population.append(individual)
 
     return population
-
-def mutate_genotype(genotype, max_depth, mutation_rate, rng=random):
-    """
-    Mutate a structured genotype by randomly changing production indices.
-    Each gene (production index) has a chance to be mutated based on mutation_rate.
-    """
-    new_genotype = {nt: list(genes) for nt, genes in genotype.items()}
-
-    for nt, genes in new_genotype.items():
-        for i in range(len(genes)):
-            if rng.random() < mutation_rate:
-                # Mutate this gene by choosing a new production index
-                old_idx = genes[i]
-                new_idx = choose_production(grammar, nt, 0, max_depth)
-                while new_idx == old_idx and len(grammar[nt]) > 1:
-                    new_idx = choose_production(grammar, nt, 0, max_depth)
-                genes[i] = new_idx
-
-    return new_genotype
-
-if __name__ == "__main__":
-    # Example usage
-    cfg = EvolutionConfig("config.json")
-    pop = initialise_population(cfg)
-    genotype = {
-        'start': [0],
-        'expr': [0, 3, 0, 1, 0],
-        'op': [2, 0],
-        'pre_op': [1],
-        'var': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    }
-    for ind in pop[:3]:  # print first 3 individuals
-        print("Genotype:", ind['genotype'])
-        print("Phenotype:", ind['phenotype'])

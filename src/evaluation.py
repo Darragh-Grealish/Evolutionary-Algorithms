@@ -16,34 +16,28 @@ def safe_div(a, b):
     return a / b if abs(b) > 1e-10 else 0.0
 
 def evaluate_population(population, X, y, cfg):
-    for genome in population:
+    for individual in population:
         start = time.time()
 
-        tree = genome.get('phenotype')
-        if tree is None:
-            # Map genotype to phenotype tree if missing
-            print("Error - phenotype missing")
-            genotype, tree = map_genotype(
-                grammar=GRAMMAR,
-                genotype=genome['genotype'],
-                axiom="start",
-                max_depth=cfg.max_depth,
-            )
-            genome['genotype'] = genotype
-            genome['phenotype'] = tree
+        individual['phenotype'] = map_genotype(
+            grammar=GRAMMAR,
+            genotype=individual['genotype'],
+            axiom="start",
+            max_depth=cfg.max_depth,
+        )
 
         # Build a hashable key from structured genes
-        key = tuple((nt, tuple(genome['genotype'].get(nt, []))) for nt in sorted(GRAMMAR.keys()))
+        key = tuple((nt, tuple(individual['genotype'].get(nt, []))) for nt in sorted(GRAMMAR.keys()))
 
         # --- Fitness (cached) ---
         fit = fitness_cache.get(key)
         if fit is None:
-            preds = np.array([eval_tree(tree, {k: s[i] for i, k in enumerate(cfg.feature_names)}) for s in X])
+            preds = np.array([eval_tree(individual['phenotype'], {k: s[i] for i, k in enumerate(cfg.feature_names)}) for s in X])
             fit = np.sqrt(np.mean((preds - y) ** 2))
             fitness_cache[key] = fit
         
-        genome['fitness'] = fit
-        genome['eval_time'] = time.time() - start
+        individual['fitness'] = fit
+        individual['eval_time'] = time.time() - start
 
     return population
 

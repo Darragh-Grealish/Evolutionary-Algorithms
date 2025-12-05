@@ -1,9 +1,7 @@
 import numpy as np, random, time
 from src.grammar import initialise_population
-from src.evaluation import (
-    evaluate_population,
-    fitness_cache
-)
+from src.evaluation import evaluate_population,fitness_cache
+from src.genetic_operators import crossover_individuals, mutate_genotype
 from src.visualisation import plot_generation_times
 
 def run_ge(X, y, cfg):
@@ -27,19 +25,25 @@ def run_ge(X, y, cfg):
         parents = population[:cfg.top_parents_count]
 
         # --- Fill remaining population ---
+        start_fill = time.perf_counter()
         while len(new_pop) < cfg.population_size:
             p1, p2 = random.choice(parents), random.choice(parents)
 
-            c1, c2 = crossover(p1['genotype'], p2['genotype'], cfg.crossover_rate)
-            c1 = mutate(c1, mutation_rate)
-            c2 = mutate(c2, mutation_rate)
+            # DSGE-style gene-level uniform crossover (whole-gene swap via mask)
+            c1_ind, c2_ind = crossover_individuals(p1, p2)
 
-            new_pop.append({'genotype': c1, 'phenotype': None, 'fitness': None})
+            c1g = mutate_genotype(c1_ind['genotype'], max_depth=cfg.max_depth)
+            c2g = mutate_genotype(c2_ind['genotype'], max_depth=cfg.max_depth)
+
+            new_pop.append({'genotype': c1g, 'phenotype': None, 'fitness': None})
             if len(new_pop) < cfg.population_size:
-                new_pop.append({'genotype': c2, 'phenotype': None, 'fitness': None})
+                new_pop.append({'genotype': c2g, 'phenotype': None, 'fitness': None})
+        print(f"Filling new population time: {time.perf_counter() - start_fill:.4f}s")
 
         # --- Evaluate new population ---
+        start_eval = time.perf_counter()
         population = evaluate_population(new_pop, X, y, cfg)
+        print(f"Evaluation time: {time.perf_counter() - start_eval:.4f}s")
 
         elapsed = time.perf_counter() - start
         generation_times.append(elapsed)
