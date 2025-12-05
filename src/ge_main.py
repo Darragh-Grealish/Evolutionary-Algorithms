@@ -1,7 +1,7 @@
 import numpy as np, random, time, secrets
 from src.genome import Genome
 from src.grammar import genome_to_expression
-from src.evaluation import fitness, random_genome, crossover, mutate, get_dynamic_mutation_rate, expr_cache, fitness_cache
+from src.evaluation import evaluate_expression, fitness, random_genome, crossover, mutate, get_dynamic_mutation_rate, expr_cache, fitness_cache
 from src.visualisation import plot_generation_times
 
 def run_ge(X, y, cfg):
@@ -21,6 +21,14 @@ def run_ge(X, y, cfg):
         worst_f = population[-1].fitness
         best_expr_str = population[0].phenotype
         print(f"Gen {gen}: Best Fitness {best_f:.2f} Expr: {best_expr_str}")
+
+
+        # for i in enumerate(population):
+        #     print("EXPR:", i[1].phenotype)
+        #     print("FITNESS:", i[1].fitness)
+        #     print("PREDS:", [evaluate_expression(i[1].phenotype, f) for f in X[:5]])
+        #     print("\n")
+
 
         mutation_rate = get_dynamic_mutation_rate(best_fitness=best_f, worst_fitness=worst_f, min_rate=cfg.min_mutation_rate, max_rate=cfg.max_mutation_rate)
         print(f"  Dynamic mutation rate this gen: {mutation_rate:.4f}")
