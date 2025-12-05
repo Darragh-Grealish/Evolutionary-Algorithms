@@ -1,4 +1,4 @@
-<expr> ::= <expr> <op> <expr> | (<expr> <op> <expr>) | <var> | <st>
-<op> ::= + | - | * | / | pow | log | sqrt | sin | cos | exp
-<var> ::= bedrooms | bathrooms | sqft_living | sqft_lot | floors | view | condition | sqft_above | sqft_basement | yr_built | yr_renovated | city_num | statezip_num | country_num
-<st> ::= 1 | 2 | 3 | 5 | 10 | 100
+<expr> ::= <expr><op><expr> | (<expr><op><expr>) | <pre_op>(<expr>) | <var>   
+<op> ::= + | - | * | /
+<pre_op> ::= sin | cos| exp | inv | log
+<var> ::= bedrooms | bathrooms | sqft_living | sqft_lot | floors | view | condition | sqft_above | sqft_basement | yr_built | yr_renovated | city_num | statezip_num | country_num | 1.0
