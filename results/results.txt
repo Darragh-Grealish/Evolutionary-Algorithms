@@ -1,3 +1,34 @@
 Gen 49: Best Fitness 186778.11 Expr: ( 1 + 10 ) * ( 10 * ( ( city_num * 10 + sqft_living ) * 2 ) )
   Dynamic mutation rate this gen: 0.0500
 Generation 49 completed in 10.7241s
+
+
+
+
+
+Gen 49: Best Fitness 293343.50 Expr: ( city_num * ( sqft_living + sqft_living ) * condition )
+  Dynamic mutation rate this gen: 0.0500
+Generation 49 completed in 6.0571s
+
+
+
+Number 4
+Gen 39: Best Fitness 320571.00 Expr: ( bathrooms * ( bedrooms * city_num * yr_built ) )
+  Dynamic mutation rate this gen: 0.1500
+Generation 39 completed in 32.4800s
+
+
+Number 5
+Gen 49: Best Fitness 282637.20 Expr: ( sqft_above * condition ) * ( statezip_num + bedrooms + city_num )
+  Dynamic mutation rate this gen: 0.1500
+Generation 49 completed in 27.8672s
+
+
+
+Number 6 
+Gen 49: Best Fitness 227561.23 Expr: 3 * sqft_above * 100
+  Dynamic mutation rate this gen: 0.0500
+Generation 49 completed in 4.1697s
+Expr cache size: 0, Fitness cache size: 8174
+
+
