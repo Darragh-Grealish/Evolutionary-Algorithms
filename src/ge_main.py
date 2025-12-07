@@ -15,16 +15,13 @@ def run_ge(X, y, cfg):
     for gen in range(cfg.generations):
 
         # --- Evaluate current population ---
-        start_eval = time.perf_counter()
         population = evaluate_population(population, X, y, cfg)
-        end_eval = time.perf_counter()
 
         # --- Sort by fitness ---
         population.sort(key=lambda g: g['fitness'])
         best = population[0]
         logger.info("Gen %d: Best Fitness %.4f Expr: %s",
                     gen, best['fitness'], best['phenotype'])
-        logger.info("Evaluation time: %.4fs\n", end_eval - start_eval)
 
         # --- Elitism ---
         new_pop = [dict(ind) for ind in population[:cfg.elitism_count]]
@@ -41,7 +38,6 @@ def run_ge(X, y, cfg):
             new_pop.append({'genotype': c1g, 'phenotype': None, 'fitness': None})
             if len(new_pop) < cfg.population_size:
                 new_pop.append({'genotype': c2g, 'phenotype': None, 'fitness': None})
-
         population = new_pop
 
     # --- Final sort & best genome ---

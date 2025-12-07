@@ -1,4 +1,5 @@
-import random, numpy as np, time, math, logging
+import random, numpy as np, time, math, logging, os
+from concurrent.futures import ThreadPoolExecutor
 from src.models import TreeNode
 from src.grammar import map_genotype, GRAMMAR
 
@@ -17,30 +18,44 @@ def safe_div(a, b):
     return a / b if abs(b) > 1e-10 else 0.0
 
 def evaluate_population(population, X, y, cfg):
-    for individual in population:
-        start = time.time()
-
-        individual['phenotype'] = map_genotype(
-            grammar=GRAMMAR,
-            genotype=individual['genotype'],
-            axiom="start",
-            max_depth=cfg.max_depth,
+    start = time.perf_counter()
+    with ThreadPoolExecutor(max_workers=os.cpu_count()) as ex:
+        results = list(
+            ex.map(
+                lambda ind: eval_individual(ind, X, y, cfg),
+                population
+            )
         )
+    logger.info("Evaluation time: %.4fs", time.perf_counter() - start)
+    return results
 
-        # Build a hashable key from structured genes
-        key = tuple((nt, tuple(individual['genotype'].get(nt, []))) for nt in sorted(GRAMMAR.keys()))
+def eval_individual(individual, X, y, cfg):
+    # phenotype
+    phenotype = map_genotype(
+        grammar=GRAMMAR,
+        genotype=individual['genotype'],
+        axiom="start",
+        max_depth=cfg.max_depth,
+    )
 
-        # --- Fitness (cached) ---
-        fit = fitness_cache.get(key)
-        if fit is None:
-            preds = np.array([eval_tree(individual['phenotype'], {k: s[i] for i, k in enumerate(cfg.feature_names)}) for s in X])
-            fit = np.sqrt(np.mean((preds - y) ** 2))
-            fitness_cache[key] = fit
-        
-        individual['fitness'] = fit
-        individual['eval_time'] = time.time() - start
+    # cache key
+    key = tuple((nt, tuple(individual['genotype'].get(nt, []))) 
+                for nt in sorted(GRAMMAR.keys()))
 
-    return population
+    fit = fitness_cache.get(key)
+    if fit is None:
+        preds = np.array([
+            eval_tree(phenotype, {k: s[i] for i, k in enumerate(cfg.feature_names)})
+            for s in X
+        ])
+        fit = np.sqrt(np.mean((preds - y) ** 2))
+        fitness_cache[key] = fit
+
+    return {
+        "genotype": individual["genotype"],
+        "phenotype": phenotype,
+        "fitness": fit,
+    }
 
 def eval_tree(node, sample):
     """

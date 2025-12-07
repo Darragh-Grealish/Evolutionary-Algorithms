@@ -4,3 +4,7 @@ todo :
 - Parallelise / optimise code - currently bottleneck in is evaluating fitness in this line -> fitnesses = [fitness(g, X, y, cfg.max_depth) for g in population]
 - Evaluation of 10 best phenotypes on test set - use RMSE instead of MAE (to be consistent with evaluation from gen to gen), also calculate the average difference in dollars between pred and actual
 - Unit test everything thoroughly
+
+note:
+- code is currently multithreaded but not multiprocessed. Speed increase was negligible. May need to remove cache and try multi processing
+- all the time per generation is spent on evaluation

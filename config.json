@@ -1,6 +1,6 @@
 {
     "generations": 3,
-    "population_size": 100,
+    "population_size": 2000,
     "genome_length": 100,
     "max_depth": 5,
     "evol_options": {
