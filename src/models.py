@@ -20,10 +20,7 @@ class EvolutionConfig:
         opts = data.get("evol_options", {})
         self.elitism_percentage = opts.get("elitism_percentage", 0.2)
         self.parent_selection_size = opts.get("parent_selection_size", 0.1)
-        self.crossover_rate = opts.get("crossover_rate", 0.7)
-        self.mutation_rate = opts.get("mutation_rate", 0.1)
-        self.min_mutation_rate = opts.get("min_mutation_rate", 0.01)
-        self.max_mutation_rate = opts.get("max_mutation_rate", 0.5)
+        self.mutations_per_genome = opts.get("muatations_per_genome", 1)
 
         logger.info("EvolutionConfig initialized with: generations=%d, population_size=%d, genome_length=%d, max_depth=%d",
                     self.generations, self.population_size, self.genome_length, self.max_depth)

@@ -1,18 +1,7 @@
-1. Make min depth 2
-2. Sensible initialisation from paper
-3. Parallelise / optimise code - currently bottleneck in is evaluating fitness in this line -> fitnesses = [fitness(g, X, y, cfg.max_depth) for g in population]
-4. Need to debug deterministic cache size - check if cache values are the same every run (save cache after run 1, compare to cache after run 1 in next run)
-5. Could it be that first 400 are new, then in next run, 320 are new (-20% elitism) and so on. Then everything else added is new?
-6. Need to add in sin, cos , log, exp functions
-
-Bugs to fix
-
-
-
-# todo :
-# keep genome cache, and then a separate phenome cache - ensure they are same size after running (this shows 1:1 mapping)
-
-# Run the algorithm and see the target max unique genomes and then the actual unique genomes in the cache at the end
-
-
-
+todo :
+- Make min depth 2
+- Sensible initialisation from paper
+- Parallelise / optimise code - currently bottleneck in is evaluating fitness in this line -> fitnesses = [fitness(g, X, y, cfg.max_depth) for g in population]
+- Need to debug deterministic cache size - check if cache values are the same every run (save cache after run 1, compare to cache after run 1 in next run)
+- Could it be that first 400 are new, then in next run, 320 are new (-20% elitism) and so on. Then everything else added is new?
+- Need to add in sin, cos , log, exp functions

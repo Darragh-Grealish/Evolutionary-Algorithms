@@ -56,8 +56,12 @@ def run_ge(X, y, cfg):
         logger.info("Rank %d: Fitness %.4f Expr: %s", i+1, genome['fitness'], genome['phenotype'])
 
     # --- Log Caches To Show One:One Mapping ---
-    logger.info("Fitness cache size: %d", len(fitness_cache))
-    logger.info("Genome to expression cache size: %d", len(genome_to_expression_cache))
+    if (len(fitness_cache)) != (len(genome_to_expression_cache)):
+        logger.warning("Warning: Fitness cache size (%d) does not match genome to expression cache size (%d)", len(fitness_cache), len(genome_to_expression_cache))
+    else: # 1:1 mapping - DSGE working as intended
+        logger.info("Fitness cache size: %d", len(fitness_cache))
+        logger.info("Genome to expression cache size: %d", len(genome_to_expression_cache))
+    
     plot_generation_times(generation_times)
 
     # Clear caches for next step

@@ -43,29 +43,32 @@ def crossover_individuals(ind1, ind2, rng=random):
     child1 = {"genotype": c1g, "phenotype": None, "fitness": None}
     child2 = {"genotype": c2g, "phenotype": None, "fitness": None}
     return child1, child2
-    
-def mutate_genotype(genotype, max_depth, rng=random):
+
+def mutate_genotype(genotype, max_depth, mutations=1, rng=random):
     """
-    One-step mutation: choose a random gene (non-terminal) and a random
-    position, then assign a random valid production index.
-    Assumes all gene lists are non-empty.
+    Multi-step mutation: perform `mutations` independent mutations.
+    Each mutation picks a (non-terminal, position) pair that hasn't been
+    mutated already, then assigns a new valid production index.
     """
     new_genotype = {nt: list(genes) for nt, genes in genotype.items()}
 
-    # Choose a non-empty gene; if selected gene is empty, fallback to a non-empty one or seed
-    candidates = [k for k, v in new_genotype.items() if len(v) > 0]
+    # Build list of all possible (non-terminal, position) candidates
+    all_candidates = [(nt, pos) for nt, genes in new_genotype.items() for pos in range(len(genes))]
 
-    nt = rng.choice(candidates)
-    genes = new_genotype[nt]
+    # Sample unique mutation targets
+    num = min(mutations, len(all_candidates))
+    chosen = rng.sample(all_candidates, num) # get gene and position pairs to mutate
 
-    pos = rng.randrange(len(genes))
-    
-    max_choices = len(GRAMMAR[nt])
+    for nt, pos in chosen:
+        genes = new_genotype[nt]
+        max_choices = len(GRAMMAR[nt])
 
-    old_idx = genes[pos]
-    new_idx = choose_production(GRAMMAR, nt, 0, max_depth)
-    if new_idx == old_idx and max_choices > 1:
-        new_idx = (old_idx + 1) % max_choices
+        old_idx = genes[pos]
+        new_idx = choose_production(GRAMMAR, nt, 0, max_depth)
 
-    genes[pos] = new_idx
+        if new_idx == old_idx and max_choices > 1:
+            new_idx = (old_idx + 1) % max_choices
+
+        genes[pos] = new_idx
+
     return new_genotype

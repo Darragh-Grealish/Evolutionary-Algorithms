@@ -21,7 +21,7 @@ def plot_results(y_test, y_pred, show_mae=True):
     # MAE
     if show_mae:
         mae = mean_absolute_error(y_test, y_pred)
-        logger.info("Mean Absolute Error: %,.2f", mae)
+        logger.info(f"Mean Absolute Error: {mae:.2f}")
 
 
     # actual & predicted scatter graph

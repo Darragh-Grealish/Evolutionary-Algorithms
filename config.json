@@ -1,14 +1,12 @@
 {
-    "generations": 10,
+    "generations": 1,
     "population_size": 1000,
     "genome_length": 100,
     "max_depth": 5,
     "evol_options": {
         "elitism_percentage": 0.01,
         "parent_selection_size": 0.07,
-        "crossover_rate": 0.7,
-        "min_mutation_rate": 0.05,
-        "max_mutation_rate": 0.3
+        "muatations_per_genome": 1
     },
     "feature_names": [
         "bedrooms", "bathrooms", "sqft_living", "sqft_lot", "floors",
