@@ -1,5 +1,7 @@
-import random
+import random, logging
 from src.grammar import choose_production, GRAMMAR
+
+logger = logging.getLogger(__name__)
 
 def crossover_genotypes(parent1, parent2, rng=random):
     """
@@ -14,7 +16,7 @@ def crossover_genotypes(parent1, parent2, rng=random):
     child2 = {}
 
     if parent1 == None or parent2 == None:
-        print("Error : One of the parents is None")
+        logger.error("Error: One of the parents is None")
 
     for k in keys:
         take_from_p2 = rng.random() < 0.5  # mask bit for this gene

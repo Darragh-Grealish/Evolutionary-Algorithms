@@ -1,6 +1,8 @@
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt, logging
 import numpy as np
 from sklearn.metrics import mean_absolute_error
+
+logger = logging.getLogger(__name__)
 
 def plot_generation_times(generation_times):
     plt.figure(figsize=(10, 5))
@@ -16,11 +18,10 @@ def plot_results(y_test, y_pred, show_mae=True):
     y_test = np.array(y_test)
     y_pred = np.array(y_pred)
 
-
     # MAE
     if show_mae:
         mae = mean_absolute_error(y_test, y_pred)
-        print(f"Mean Absolute Error: {mae:,.2f}")
+        logger.info("Mean Absolute Error: %,.2f", mae)
 
 
     # actual & predicted scatter graph

@@ -1,8 +1,9 @@
-import random, numpy as np, time, math
+import random, numpy as np, time, math, logging
 from src.models import TreeNode
 from src.grammar import map_genotype, GRAMMAR
 
 fitness_cache = {} # map expression to fitness
+logger = logging.getLogger(__name__)
 
 PRE_OPS = {
     'sin': lambda x: math.sin(x),
@@ -86,7 +87,7 @@ def eval_tree(node, sample):
         try:
             return float(sym)
         except ValueError:
-            print(f"Failed to parse tree {node}")
+            logger.error("Failed to parse tree %s", node)
             return 0.0  # fallback
     else:
         return float(node)  # node is already terminal

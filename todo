@@ -6,6 +6,13 @@
 6. Need to add in sin, cos , log, exp functions
 
 Bugs to fix
-1. results of 0 very common - check why
-2. Safe division
-3. Pre ops
+
+
+
+# todo :
+# keep genome cache, and then a separate phenome cache - ensure they are same size after running (this shows 1:1 mapping)
+
+# Run the algorithm and see the target max unique genomes and then the actual unique genomes in the cache at the end
+
+
+

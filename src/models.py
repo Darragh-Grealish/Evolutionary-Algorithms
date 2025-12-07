@@ -1,5 +1,7 @@
-import json
+import json, logging
 from math import ceil
+
+logger = logging.getLogger(__name__)
 
 class EvolutionConfig:
     def __init__(self, filepath="./config.json"):
@@ -22,6 +24,9 @@ class EvolutionConfig:
         self.mutation_rate = opts.get("mutation_rate", 0.1)
         self.min_mutation_rate = opts.get("min_mutation_rate", 0.01)
         self.max_mutation_rate = opts.get("max_mutation_rate", 0.5)
+
+        logger.info("EvolutionConfig initialized with: generations=%d, population_size=%d, genome_length=%d, max_depth=%d",
+                    self.generations, self.population_size, self.genome_length, self.max_depth)
 
     @property
     def elitism_count(self):
@@ -79,7 +84,7 @@ class TreeNode:
 # Example usage
 if __name__ == "__main__":
     cfg = EvolutionConfig("config.json")
-    print("Elitism count:", cfg.elitism_count)
-    print("Top parents count:", cfg.top_parents_count)
-    print("Crossover rate:", cfg.crossover_rate)
-    print("Mutation rate:", cfg.mutation_rate)
+    logger.info("Elitism count: %d", cfg.elitism_count)
+    logger.info("Top parents count: %d", cfg.top_parents_count)
+    logger.info("Crossover rate: %.2f", cfg.crossover_rate)
+    logger.info("Mutation rate: %.2f", cfg.mutation_rate)
