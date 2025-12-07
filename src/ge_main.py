@@ -10,50 +10,48 @@ def run_ge(X, y, cfg):
     generation_times = []
 
     # --- Initial population ---
-    population = initialise_population(cfg)  # list of dicts
+    population = initialise_population(cfg)
 
     for gen in range(cfg.generations):
-        start = time.perf_counter()
+
+        # --- Evaluate current population ---
+        start_eval = time.perf_counter()
         population = evaluate_population(population, X, y, cfg)
+        end_eval = time.perf_counter()
 
         # --- Sort by fitness ---
         population.sort(key=lambda g: g['fitness'])
         best = population[0]
-        best_f, worst_f = best['fitness'], population[-1]['fitness']
-        logger.info("Gen %d: Best Fitness %.4f Expr: %s", gen, best_f, best['phenotype'])
+        logger.info("Gen %d: Best Fitness %.4f Expr: %s",
+                    gen, best['fitness'], best['phenotype'])
+        logger.info("Evaluation time: %.4fs\n", end_eval - start_eval)
 
         # --- Elitism ---
-        new_pop = [dict(genome) for genome in population[:cfg.elitism_count]]
+        new_pop = [dict(ind) for ind in population[:cfg.elitism_count]]
         parents = population[:cfg.top_parents_count]
 
-        # --- Fill remaining population ---
+        # --- Reproduction ---
         while len(new_pop) < cfg.population_size:
             p1, p2 = random.choice(parents), random.choice(parents)
 
-            # DSGE-style gene-level uniform crossover (whole-gene swap via mask)
-            c1_ind, c2_ind = crossover_individuals(p1, p2)
-
-            c1g = mutate_genotype(c1_ind['genotype'], max_depth=cfg.max_depth)
-            c2g = mutate_genotype(c2_ind['genotype'], max_depth=cfg.max_depth)
+            c1, c2 = crossover_individuals(p1, p2)
+            c1g = mutate_genotype(c1['genotype'], max_depth=cfg.max_depth)
+            c2g = mutate_genotype(c2['genotype'], max_depth=cfg.max_depth)
 
             new_pop.append({'genotype': c1g, 'phenotype': None, 'fitness': None})
             if len(new_pop) < cfg.population_size:
                 new_pop.append({'genotype': c2g, 'phenotype': None, 'fitness': None})
 
-        # --- Evaluate new population ---
-        start_eval = time.perf_counter()
-        population = evaluate_population(new_pop, X, y, cfg)
-        logger.info("Evaluation time: %.4fs", time.perf_counter() - start_eval)
-        elapsed = time.perf_counter() - start
-        generation_times.append(elapsed)
-        logger.info("Generation %d completed in %.4fs", gen, elapsed)
+        population = new_pop
 
     # --- Final sort & best genome ---
+    population = evaluate_population(population, X, y, cfg)
     population.sort(key=lambda g: g['fitness'])
     best = population[0:10] # return top 10 genomes
     logger.info("Best 10 Genomes:")
     for i, genome in enumerate(best):
         logger.info("Rank %d: Fitness %.4f Expr: %s", i+1, genome['fitness'], genome['phenotype'])
+    logger.info("\n")
 
     # --- Log Caches To Show One:One Mapping ---
     if (len(fitness_cache)) != (len(genome_to_expression_cache)):
@@ -61,8 +59,6 @@ def run_ge(X, y, cfg):
     else: # 1:1 mapping - DSGE working as intended
         logger.info("Fitness cache size: %d", len(fitness_cache))
         logger.info("Genome to expression cache size: %d", len(genome_to_expression_cache))
-    
-    plot_generation_times(generation_times)
 
     # Clear caches for next step
     fitness_cache.clear()

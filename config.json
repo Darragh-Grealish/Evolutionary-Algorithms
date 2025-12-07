@@ -1,10 +1,10 @@
 {
-    "generations": 1,
-    "population_size": 1000,
+    "generations": 3,
+    "population_size": 100,
     "genome_length": 100,
     "max_depth": 5,
     "evol_options": {
-        "elitism_percentage": 0.01,
+        "elitism_percentage": 0.1,
         "parent_selection_size": 0.07,
         "muatations_per_genome": 1
     },

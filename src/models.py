@@ -22,7 +22,7 @@ class EvolutionConfig:
         self.parent_selection_size = opts.get("parent_selection_size", 0.1)
         self.mutations_per_genome = opts.get("muatations_per_genome", 1)
 
-        logger.info("EvolutionConfig initialized with: generations=%d, population_size=%d, genome_length=%d, max_depth=%d",
+        logger.info("EvolutionConfig initialized with: generations=%d, population_size=%d, genome_length=%d, max_depth=%d\n",
                     self.generations, self.population_size, self.genome_length, self.max_depth)
 
     @property
