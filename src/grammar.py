@@ -1,29 +1,9 @@
 import random, re, os
 from typing import List, Dict
-from src.models import TreeNode
+from src.models import TreeNode, Grammar
 
-Symbol = str
-Production = List[Symbol]
-Grammar = Dict[Symbol, List[Production]]
-
-# Defining grammar like such allows easy check for recursive productions
-GRAMMAR = {
-    "start": [["expr"]],
-    "expr": [
-        ["expr", "op", "expr"],
-        ["(", "expr", "op", "expr", ")"],
-        ["pre_op", "(", "expr", ")"],
-        ["var"]
-    ],
-    "op": [["+"], ["-"], ["*"], ["/"]],
-    "pre_op": [["sin"], ["cos"], ["exp"], ["inv"], ["log"]],
-    "var": [
-        ["bedrooms"], ["bathrooms"], ["sqft_living"], ["sqft_lot"], ["floors"],
-        ["view"], ["condition"], ["sqft_above"], ["sqft_basement"],
-        ["yr_built"], ["yr_renovated"], ["city_num"], ["statezip_num"], ["country_num"],
-        ["1.0"]
-    ]
-}
+# Initialize grammar from BNF file
+GRAMMAR = Grammar(os.path.join(os.path.dirname(__file__), "grammar.bnf"))
 
 genome_to_expression_cache = {}
 
@@ -40,7 +20,7 @@ def choose_production(grammar, nt, depth, max_depth):
         return random.choice(nonrec) if nonrec else random.randrange(len(prods))
     return random.randrange(len(prods)) # otherwise choose any production
 
-def initialise_individual(grammar, axiom, max_depth, rng=random):
+def initialise_individual(grammar, start_nt, max_depth, rng=random):
     """
     Create a structured genotype: dict mapping non-terminals to lists of chosen productions.
     This aligns with DSGE where each non-terminal has its own gene list.
@@ -55,10 +35,10 @@ def initialise_individual(grammar, axiom, max_depth, rng=random):
             if sym in grammar: # recursively built out non-terminals
                 expand(sym, depth+1)
 
-    expand(axiom, 0)
+    expand(start_nt, 0)
     return genotype # genotype is dict of lists of production indices for each non-terminal
 
-def map_genotype(grammar, genotype, axiom, max_depth, rng=random):
+def map_genotype(grammar, genotype, start_nt, max_depth, rng=random):
     """
     Map a genotype (list of production indices) to a phenotype tree (TreeNode).
     The grammar determines arity: 'op' is binary, 'pre_op' is unary, 'var' and literals are terminals.
@@ -143,13 +123,13 @@ def map_genotype(grammar, genotype, axiom, max_depth, rng=random):
         # Default: pack nodes as sequence
         return TreeNode(nt, nodes)
 
-    tree = expand(axiom, 0)
+    tree = expand(start_nt, 0)
     # cache using the final, possibly-extended genotype
     final_key = tuple((nt, tuple(genotype.get(nt, []))) for nt in sorted(grammar.keys()))
     genome_to_expression_cache[final_key] = tree
     return tree
 
-def initialise_population(config, axiom="start", rng=random):
+def initialise_population(config, start_nt="start", rng=random):
     """
     Create a list of individuals, each a dict:
         { 'genotype': [...], 'phenotype': [...], 'fitness': None }
@@ -159,7 +139,7 @@ def initialise_population(config, axiom="start", rng=random):
     for _ in range(config.population_size):
         genotype = initialise_individual(
             grammar=GRAMMAR,
-            axiom=axiom,
+            start_nt=start_nt,
             max_depth=config.max_depth,
             rng=rng
         )

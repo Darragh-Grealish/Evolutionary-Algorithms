@@ -1,0 +1,16 @@
+<start> ::= <expr>
+
+<expr> ::= <expr> <op> <expr>
+         | "(" <expr> <op> <expr> ")"
+         | <pre_op> "(" <expr> ")"
+         | <var>
+
+<op> ::= "+" | "-" | "*" | "/"
+
+<pre_op> ::= "sin" | "cos" | "exp" | "inv" | "log"
+
+<var> ::= "bedrooms" | "bathrooms" | "sqft_living" | "sqft_lot" | "floors"
+        | "view" | "condition" | "sqft_above" | "sqft_basement"
+        | "yr_built" | "yr_renovated" | "city_num" | "statezip_num" | "country_num"
+        | "1.0" | "2.0" | "3.0" | "5.0" | "7.0" | "11.0" | "13.0" | "17.0"
+        | "19.0" | "23.0" | "29.0" | "31.0" | "37.0" | "41.0" | "43.0" | "47.0"
