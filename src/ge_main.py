@@ -6,6 +6,10 @@ from src.visualisation import plot_generation_times
 
 logger = logging.getLogger(__name__)
 
+def genome_to_tuple(genotype):
+    """Convert genotype dict to a hashable tuple for uniqueness checking."""
+    return tuple(sorted((k, tuple(v)) for k, v in genotype.items()))
+
 def run_ge(X, y, cfg):
     generation_times = []
 
@@ -26,6 +30,9 @@ def run_ge(X, y, cfg):
         # --- Elitism ---
         new_pop = [dict(ind) for ind in population[:cfg.elitism_count]]
         parents = population[:cfg.top_parents_count]
+        
+        # Create set to track unique genomes in new population
+        genome_set = {genome_to_tuple(ind['genotype']) for ind in new_pop}
 
         # --- Reproduction ---
         while len(new_pop) < cfg.population_size:
@@ -34,9 +41,20 @@ def run_ge(X, y, cfg):
             c1, c2 = crossover_individuals(p1, p2)
             c1g = mutate_genotype(c1['genotype'], max_depth=cfg.max_depth)
             c2g = mutate_genotype(c2['genotype'], max_depth=cfg.max_depth)
-
+            
+            # Ensure c1g is unique - keep mutating until it is
+            while genome_to_tuple(c1g) in genome_set:
+                c1g = mutate_genotype(c1g, max_depth=cfg.max_depth)
+            
+            genome_set.add(genome_to_tuple(c1g))
             new_pop.append({'genotype': c1g, 'phenotype': None, 'fitness': None})
+            
             if len(new_pop) < cfg.population_size:
+                # Ensure c2g is unique - keep mutating until it is
+                while genome_to_tuple(c2g) in genome_set:
+                    c2g = mutate_genotype(c2g, max_depth=cfg.max_depth)
+                
+                genome_set.add(genome_to_tuple(c2g))
                 new_pop.append({'genotype': c2g, 'phenotype': None, 'fitness': None})
         population = new_pop
 

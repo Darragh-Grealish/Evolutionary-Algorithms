@@ -1,0 +1,234 @@
+INFO: Loading and preprocessing data...
+INFO: EvolutionConfig initialized with: generations=100, population_size=1000, genome_length=100, max_depth=5
+INFO: EvolutionConfig options: elitism_percentage=0.01, parent_selection_size=0.07, mutations_per_genome=3
+
+INFO: Evaluation time: 9.4769s
+INFO: Gen 0: Best Fitness 285356.9909 Expr: ((((5.0 * 29.0) * sqft_living) + 31.0) + log((37.0 * exp(bathrooms))))
+INFO: Evaluation time: 13.9721s
+INFO: Gen 1: Best Fitness 228379.5337 Expr: ((23.0 * ((sqft_above + (inv(3.0) + 37.0)) + (bathrooms / 7.0))) * 13.0)
+INFO: Evaluation time: 15.7821s
+INFO: Gen 2: Best Fitness 202151.8574 Expr: exp(log(((sqft_living * 7.0) * (41.0 - 2.0))))
+INFO: Evaluation time: 15.8307s
+INFO: Gen 3: Best Fitness 202151.8574 Expr: exp(log(((sqft_living * 7.0) * (41.0 - 2.0))))
+INFO: Evaluation time: 14.5890s
+INFO: Gen 4: Best Fitness 202151.8574 Expr: exp(log(((sqft_living * 7.0) * (41.0 - 2.0))))
+INFO: Evaluation time: 14.8071s
+INFO: Gen 5: Best Fitness 201963.4800 Expr: (7.0 * (((29.0 * sqft_living) + (31.0 * 37.0)) + ((bathrooms / floors) + (bathrooms + sqft_above))))
+INFO: Evaluation time: 14.9205s
+INFO: Gen 6: Best Fitness 197967.7604 Expr: ((((7.0 * 29.0) * sqft_living) + (inv((31.0 + inv(((43.0 * bathrooms) * 19.0)))) * (29.0 / country_num))) - 13.0)
+INFO: Evaluation time: 15.3698s
+INFO: Gen 7: Best Fitness 191094.7015 Expr: ((((5.0 * 41.0) * sqft_living) + 31.0) + inv((37.0 * inv(((bathrooms + yr_built) * yr_built)))))
+INFO: Evaluation time: 16.3934s
+INFO: Gen 8: Best Fitness 191094.7015 Expr: ((((5.0 * 41.0) * sqft_living) + 31.0) + inv((37.0 * inv(((bathrooms + yr_built) * yr_built)))))
+INFO: Evaluation time: 17.3572s
+INFO: Gen 9: Best Fitness 191094.7015 Expr: ((((5.0 * 41.0) * sqft_living) + 31.0) + inv((37.0 * inv(((bathrooms + yr_built) * yr_built)))))
+INFO: Evaluation time: 16.4118s
+INFO: Gen 10: Best Fitness 191094.7015 Expr: ((((5.0 * 41.0) * sqft_living) + 31.0) + inv((37.0 * inv(((bathrooms + yr_built) * yr_built)))))
+INFO: Evaluation time: 17.5357s
+INFO: Gen 11: Best Fitness 187443.6806 Expr: exp(log(((7.0 * 31.0) * ((sqft_living + 31.0) + (7.0 * city_num)))))
+INFO: Evaluation time: 17.6753s
+INFO: Gen 12: Best Fitness 187443.6806 Expr: exp(log(((7.0 * 31.0) * ((sqft_living + 31.0) + (7.0 * city_num)))))
+INFO: Evaluation time: 17.9999s
+INFO: Gen 13: Best Fitness 187222.4226 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + 31.0) + (7.0 * (city_num + floors))))))
+INFO: Evaluation time: 17.6059s
+INFO: Gen 14: Best Fitness 186097.3108 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + 31.0) + (7.0 * (city_num * floors))))))
+INFO: Evaluation time: 15.1665s
+INFO: Gen 15: Best Fitness 185801.2229 Expr: exp(log(((7.0 * 31.0) * ((sqft_living + 19.0) + (11.0 * (city_num + floors))))))
+INFO: Evaluation time: 14.8090s
+INFO: Gen 16: Best Fitness 185762.3822 Expr: exp(log(((7.0 * 31.0) * ((sqft_living + 19.0) + ((11.0 * city_num) + floors)))))
+INFO: Evaluation time: 15.4270s
+INFO: Gen 17: Best Fitness 185643.0723 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + city_num) + ((11.0 * city_num) + floors)))))
+INFO: Evaluation time: 15.0051s
+INFO: Gen 18: Best Fitness 185637.7033 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + city_num) + ((11.0 * city_num) - floors)))))
+INFO: Evaluation time: 15.1961s
+INFO: Gen 19: Best Fitness 185613.2338 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + city_num) + ((11.0 * city_num) + (floors - 7.0))))))
+INFO: Evaluation time: 15.1547s
+INFO: Gen 20: Best Fitness 185466.9870 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + 31.0) + (11.0 * (city_num + (view - 3.0)))))))
+INFO: Evaluation time: 15.0822s
+INFO: Gen 21: Best Fitness 185048.3989 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + 31.0) + (11.0 * (city_num + (view * 3.0)))))))
+INFO: Evaluation time: 15.8255s
+INFO: Gen 22: Best Fitness 184009.0476 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + 31.0) + (11.0 * (city_num + exp(view)))))))
+INFO: Evaluation time: 15.9903s
+INFO: Gen 23: Best Fitness 183393.9014 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + 31.0) + (11.0 * (city_num + (view * 13.0)))))))
+INFO: Evaluation time: 16.6083s
+INFO: Gen 24: Best Fitness 182893.5714 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + city_num) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 16.9687s
+INFO: Gen 25: Best Fitness 182812.7898 Expr: exp(log(((7.0 * 31.0) * ((sqft_living + country_num) + (11.0 * (city_num + (view * 17.0)))))))
+INFO: Evaluation time: 16.5854s
+INFO: Gen 26: Best Fitness 182736.1848 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living + 1.0) + (11.0 * (city_num + (view * 19.0)))))))
+INFO: Evaluation time: 16.7709s
+INFO: Gen 27: Best Fitness 182618.3937 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 31.0) + (11.0 * (city_num + (view * 19.0)))))))
+INFO: Evaluation time: 16.8154s
+INFO: Gen 28: Best Fitness 182618.3937 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 31.0) + (11.0 * (city_num + (view * 19.0)))))))
+INFO: Evaluation time: 16.8450s
+INFO: Gen 29: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 16.8400s
+INFO: Gen 30: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 17.2320s
+INFO: Gen 31: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 17.0402s
+INFO: Gen 32: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 17.0351s
+INFO: Gen 33: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 16.4131s
+INFO: Gen 34: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 16.7516s
+INFO: Gen 35: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 17.0732s
+INFO: Gen 36: Best Fitness 182549.9148 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + (view * 23.0)))))))
+INFO: Evaluation time: 16.7772s
+INFO: Gen 37: Best Fitness 182547.5175 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - view)))))))
+INFO: Evaluation time: 16.6554s
+INFO: Gen 38: Best Fitness 182547.5175 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - view)))))))
+INFO: Evaluation time: 16.8473s
+INFO: Gen 39: Best Fitness 182547.5175 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - view)))))))
+INFO: Evaluation time: 16.8279s
+INFO: Gen 40: Best Fitness 182547.5175 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - view)))))))
+INFO: Evaluation time: 16.6397s
+INFO: Gen 41: Best Fitness 182547.5175 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - view)))))))
+INFO: Evaluation time: 16.8542s
+INFO: Gen 42: Best Fitness 182538.4237 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - sin(view))))))))
+INFO: Evaluation time: 17.0422s
+INFO: Gen 43: Best Fitness 182453.6246 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - bedrooms)))))))
+INFO: Evaluation time: 17.4632s
+INFO: Gen 44: Best Fitness 182027.2486 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - cos(city_num))))))))
+INFO: Evaluation time: 18.5868s
+INFO: Gen 45: Best Fitness 182027.2486 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - cos(city_num))))))))
+INFO: Evaluation time: 18.7442s
+INFO: Gen 46: Best Fitness 182027.2486 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - cos(city_num))))))))
+INFO: Evaluation time: 18.1635s
+INFO: Gen 47: Best Fitness 182027.2486 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - cos(city_num))))))))
+INFO: Evaluation time: 18.8887s
+INFO: Gen 48: Best Fitness 181956.1260 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - sin((city_num + 1.0)))))))))
+INFO: Evaluation time: 18.8032s
+INFO: Gen 49: Best Fitness 180116.2462 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * 5.0))))))))
+INFO: Evaluation time: 18.9009s
+INFO: Gen 50: Best Fitness 180116.2462 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * 5.0))))))))
+INFO: Evaluation time: 19.4970s
+INFO: Gen 51: Best Fitness 180116.2462 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * 5.0))))))))
+INFO: Evaluation time: 19.3117s
+INFO: Gen 52: Best Fitness 178732.0997 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * 47.0))))))))
+INFO: Evaluation time: 19.6560s
+INFO: Gen 53: Best Fitness 175775.0432 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * exp(log(19.0))))))))))
+INFO: Evaluation time: 20.4411s
+INFO: Gen 54: Best Fitness 175775.0432 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * exp(log(19.0))))))))))
+INFO: Evaluation time: 21.1675s
+INFO: Gen 55: Best Fitness 175643.5109 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 19.0) - (cos(city_num) * 19.0))))))))
+INFO: Evaluation time: 20.6546s
+INFO: Gen 56: Best Fitness 175100.8061 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 19.7913s
+INFO: Gen 57: Best Fitness 175100.8061 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 23.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 20.1843s
+INFO: Gen 58: Best Fitness 174891.7435 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 37.0) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 20.7220s
+INFO: Gen 59: Best Fitness 174815.5102 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 19.0) - (cos(city_num) * ((19.0 * 41.0) / 29.0)))))))))
+INFO: Evaluation time: 20.2132s
+INFO: Gen 60: Best Fitness 174815.5102 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 19.0) - (cos(city_num) * ((19.0 * 41.0) / 29.0)))))))))
+INFO: Evaluation time: 20.1904s
+INFO: Gen 61: Best Fitness 174815.5102 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 19.0) - (cos(city_num) * ((19.0 * 41.0) / 29.0)))))))))
+INFO: Evaluation time: 20.0896s
+INFO: Gen 62: Best Fitness 174810.1064 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - 41.0) + (11.0 * (city_num + ((view * 19.0) - (cos(city_num) * ((19.0 / 41.0) + 29.0)))))))))
+INFO: Evaluation time: 20.5686s
+INFO: Gen 63: Best Fitness 174670.5177 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 13.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 20.3743s
+INFO: Gen 64: Best Fitness 174670.5177 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 13.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 20.8847s
+INFO: Gen 65: Best Fitness 174566.1267 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 20.5743s
+INFO: Gen 66: Best Fitness 174566.1267 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 20.0966s
+INFO: Gen 67: Best Fitness 174566.1267 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 20.1312s
+INFO: Gen 68: Best Fitness 174566.1267 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 31.0))))))))
+INFO: Evaluation time: 19.8880s
+INFO: Gen 69: Best Fitness 174534.7238 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 29.0))))))))
+INFO: Evaluation time: 19.8887s
+INFO: Gen 70: Best Fitness 174534.7238 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 29.0))))))))
+INFO: Evaluation time: 20.4724s
+INFO: Gen 71: Best Fitness 174534.7238 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 29.0))))))))
+INFO: Evaluation time: 20.1617s
+INFO: Gen 72: Best Fitness 174534.7238 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 29.0))))))))
+INFO: Evaluation time: 20.1071s
+INFO: Gen 73: Best Fitness 174534.7238 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 29.0))))))))
+INFO: Evaluation time: 20.0683s
+INFO: Gen 74: Best Fitness 174534.7238 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 29.0))))))))
+INFO: Evaluation time: 19.9187s
+INFO: Gen 75: Best Fitness 174534.7238 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * 29.0))))))))
+INFO: Evaluation time: 19.6433s
+INFO: Gen 76: Best Fitness 174532.9637 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + condition)))))))))
+INFO: Evaluation time: 20.2165s
+INFO: Gen 77: Best Fitness 174532.9637 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + condition)))))))))
+INFO: Evaluation time: 20.2563s
+INFO: Gen 78: Best Fitness 174532.9637 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + condition)))))))))
+INFO: Evaluation time: 19.9009s
+INFO: Gen 79: Best Fitness 174532.9637 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + condition)))))))))
+INFO: Evaluation time: 19.7114s
+INFO: Gen 80: Best Fitness 174469.2599 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + floors)))))))))
+INFO: Evaluation time: 20.0540s
+INFO: Gen 81: Best Fitness 174469.2599 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + floors)))))))))
+INFO: Evaluation time: 19.9799s
+INFO: Gen 82: Best Fitness 174469.2599 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + floors)))))))))
+INFO: Evaluation time: 20.2317s
+INFO: Gen 83: Best Fitness 174469.2599 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + floors)))))))))
+INFO: Evaluation time: 21.1585s
+INFO: Gen 84: Best Fitness 174469.2599 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + floors)))))))))
+INFO: Evaluation time: 21.4241s
+INFO: Gen 85: Best Fitness 174463.6584 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + (cos(condition) + view))))))))))
+INFO: Evaluation time: 21.5387s
+INFO: Gen 86: Best Fitness 174449.1259 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + view)))))))))
+INFO: Evaluation time: 21.2877s
+INFO: Gen 87: Best Fitness 174449.1259 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + view)))))))))
+INFO: Evaluation time: 21.2076s
+INFO: Gen 88: Best Fitness 174449.1259 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + view)))))))))
+INFO: Evaluation time: 22.4550s
+INFO: Gen 89: Best Fitness 174449.1259 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + view)))))))))
+INFO: Evaluation time: 21.6015s
+INFO: Gen 90: Best Fitness 174449.1259 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + view)))))))))
+INFO: Evaluation time: 21.8443s
+INFO: Gen 91: Best Fitness 174449.1259 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + view)))))))))
+INFO: Evaluation time: 21.7785s
+INFO: Gen 92: Best Fitness 174449.1259 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + view)))))))))
+INFO: Evaluation time: 22.4835s
+INFO: Gen 93: Best Fitness 174440.7558 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + (floors + (view * 3.0)))))))))))
+INFO: Evaluation time: 22.3856s
+INFO: Gen 94: Best Fitness 174424.5292 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * floors))))))))))
+INFO: Evaluation time: 22.3775s
+INFO: Gen 95: Best Fitness 174424.5292 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * floors))))))))))
+INFO: Evaluation time: 22.9831s
+INFO: Gen 96: Best Fitness 174404.8528 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * (floors * bedrooms)))))))))))
+INFO: Evaluation time: 22.7045s
+INFO: Gen 97: Best Fitness 174395.4118 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view - inv(floors)))))))))))
+INFO: Evaluation time: 23.4561s
+INFO: Gen 98: Best Fitness 174319.8526 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + ((floors + view) * floors)) + view)))))))))
+INFO: Evaluation time: 23.7097s
+INFO: Gen 99: Best Fitness 174305.9815 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + ((floors + view) * floors)) - 5.0)))))))))
+INFO: Evaluation time: 24.0816s
+INFO: Best 10 Genomes:
+INFO: Rank 1: Fitness 174255.9343 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * (29.0 + (((floors + view) * floors) - 2.0))))))))))
+INFO: Rank 2: Fitness 174305.9815 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + ((floors + view) * floors)) - 5.0)))))))))
+INFO: Rank 3: Fitness 174305.9815 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + ((floors + view) * floors)) - (5.0 / 1.0))))))))))
+INFO: Rank 4: Fitness 174319.8526 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + ((floors + view) * floors)) + view)))))))))
+INFO: Rank 5: Fitness 174395.4118 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view - inv(floors)))))))))))
+INFO: Rank 6: Fitness 174400.1987 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * (floors * floors)))))))))))
+INFO: Rank 7: Fitness 174400.1987 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * (floors * floors)))))))))))
+INFO: Rank 8: Fitness 174404.8528 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * (floors * bedrooms)))))))))))
+INFO: Rank 9: Fitness 174404.8528 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * (floors * bedrooms)))))))))))
+INFO: Rank 10: Fitness 174404.8528 Expr: inv(inv(((7.0 * 31.0) * ((sqft_living - statezip_num) + (11.0 * (city_num + ((view * 17.0) - (cos(city_num) * ((29.0 + floors) + (view * (floors * bedrooms)))))))))))
+INFO: 
+
+INFO: Fitness cache size: 98592
+INFO: Genome to expression cache size: 98592
+INFO: ================================================================================
+INFO: EVALUATING TOP 10 INDIVIDUALS ON TEST DATASET
+INFO: ================================================================================
+INFO: 
+================================================================================
+INFO: TEST SET EVALUATION SUMMARY
+INFO: ================================================================================
+INFO:   Test samples: 887
+INFO:   Best individual on test set: Rank 2
+INFO:   Test RMSE: 171762.9636
+INFO:   Average Absolute Error: $130099.64
+INFO: 
+Predictions (first 5): [np.float64(793859.172219496), np.float64(618749.3712059398), np.float64(550911.5638364377), np.float64(534201.2502726752), np.float64(680546.5121001562)]
+INFO: Mean Absolute Error: 130333.37
