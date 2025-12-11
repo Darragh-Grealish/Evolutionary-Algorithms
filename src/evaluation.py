@@ -1,5 +1,5 @@
 import random, numpy as np, time, math, logging, os
-from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool, cpu_count
 from src.models import TreeNode
 from src.grammar import map_genotype, GRAMMAR
 
@@ -23,15 +23,17 @@ PRE_OPS = {
 def safe_div(a, b):
     return clamp(a / max(abs(b), EPS) * (1 if b >= 0 else -1))
 
+def _eval_individual_wrapper(args):
+    """Wrapper function for multiprocessing that unpacks arguments."""
+    individual, X, y, cfg = args
+    return eval_individual(individual, X, y, cfg)
+
 def evaluate_population(population, X, y, cfg):
     start = time.perf_counter()
-    with ThreadPoolExecutor(max_workers=os.cpu_count()) as ex:
-        results = list(
-            ex.map(
-                lambda ind: eval_individual(ind, X, y, cfg),
-                population
-            )
-        )
+    with Pool(processes=cpu_count()) as pool:
+        # Create argument tuples for each individual
+        args_list = [(ind, X, y, cfg) for ind in population]
+        results = pool.map(_eval_individual_wrapper, args_list)
     logger.info("Evaluation time: %.4fs", time.perf_counter() - start)
     return results
 
