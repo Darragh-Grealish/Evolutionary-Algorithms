@@ -55,6 +55,8 @@ GE_House_Price/
 ├── logs/
 │   └── ...
 │
+├── config.json
+│
 ├── requirements.txt
 │
 ├── pytest.ini
