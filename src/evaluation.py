@@ -1,7 +1,7 @@
 import random, numpy as np, time, math, logging, os
 from multiprocessing import Pool, cpu_count
 from src.models import TreeNode
-from src.grammar import map_genotype, GRAMMAR
+from src.population import map_genotype, GRAMMAR
 
 fitness_cache = {} # map expression to fitness
 logger = logging.getLogger(__name__)

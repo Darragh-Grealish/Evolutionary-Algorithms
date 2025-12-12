@@ -1,5 +1,5 @@
 import numpy as np, random, time, logging
-from src.grammar import initialise_population, genome_to_expression_cache
+from src.population import initialise_population, genome_to_expression_cache
 from src.evaluation import evaluate_population, fitness_cache
 from src.genetic_operators import crossover_individuals, mutate_genotype
 from src.visualisation import plot_generation_times

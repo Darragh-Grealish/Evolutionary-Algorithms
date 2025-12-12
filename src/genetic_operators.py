@@ -1,5 +1,5 @@
 import random, logging
-from src.grammar import choose_production, GRAMMAR
+from src.population import choose_production, GRAMMAR
 
 logger = logging.getLogger(__name__)
 
