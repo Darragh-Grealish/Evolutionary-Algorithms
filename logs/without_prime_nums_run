@@ -1,0 +1,74 @@
+INFO: Loading and preprocessing data...
+INFO: EvolutionConfig initialized with: generations=20, population_size=1000, genome_length=100, max_depth=5
+INFO: EvolutionConfig options: elitism_percentage=0.01, parent_selection_size=0.07, mutations_per_genome=3
+
+INFO: Evaluation time: 3.2157s
+INFO: Gen 0: Best Fitness 425325.7889 Expr: exp((((sqft_living - yr_built) - bathrooms) - 1.0))
+INFO: Evaluation time: 1.9619s
+INFO: Gen 1: Best Fitness 314314.1607 Expr: ((((sqft_lot - 1.0) / log(1.0)) - (floors - (sqft_lot - sqft_living))) / inv((inv(bedrooms) / inv(floors))))
+INFO: Evaluation time: 2.5075s
+INFO: Gen 2: Best Fitness 314314.1607 Expr: ((((sqft_lot - 1.0) / log(1.0)) - (floors - (sqft_lot - sqft_living))) / inv((inv(bedrooms) / inv(floors))))
+INFO: Evaluation time: 2.4081s
+INFO: Gen 3: Best Fitness 260773.9656 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) * sqft_living) / sqft_living)
+INFO: Evaluation time: 2.4019s
+INFO: Gen 4: Best Fitness 241231.5450 Expr: ((((sqft_lot - 1.0) / log(1.0)) - (floors - (sqft_lot - inv(inv((inv(sqft_living) / exp(bedrooms))))))) / exp(inv(floors)))
+INFO: Evaluation time: 2.2886s
+INFO: Gen 5: Best Fitness 241231.5450 Expr: ((((sqft_lot - 1.0) / log(1.0)) - (floors - (sqft_lot - inv(inv((inv(sqft_living) / exp(bedrooms))))))) / exp(inv(floors)))
+INFO: Evaluation time: 2.3501s
+INFO: Gen 6: Best Fitness 241231.5450 Expr: ((((sqft_lot - 1.0) / log(1.0)) - (floors - (sqft_lot - inv(inv((inv(sqft_living) / exp(bedrooms))))))) / exp(inv(floors)))
+INFO: Evaluation time: 2.7865s
+INFO: Gen 7: Best Fitness 232070.3833 Expr: (((exp(exp((sqft_living * yr_built))) / exp(sin(bathrooms))) + bedrooms) + bedrooms)
+INFO: Evaluation time: 3.1805s
+INFO: Gen 8: Best Fitness 232070.0106 Expr: (((exp(exp((sqft_living * yr_built))) / exp(sin(bathrooms))) - bedrooms) + bedrooms)
+INFO: Evaluation time: 3.2415s
+INFO: Gen 9: Best Fitness 232070.0106 Expr: (((exp(exp((sqft_living * yr_built))) / exp(sin(bathrooms))) - bedrooms) + bedrooms)
+INFO: Evaluation time: 4.2587s
+INFO: Gen 10: Best Fitness 227613.8401 Expr: (((exp(exp((bedrooms * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) + ((floors / yr_built) - inv(1.0))))
+INFO: Evaluation time: 4.2271s
+INFO: Gen 11: Best Fitness 227613.8401 Expr: (((exp(exp((bedrooms * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) + ((floors / yr_built) - inv(1.0))))
+INFO: Evaluation time: 4.2145s
+INFO: Gen 12: Best Fitness 226569.6478 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) + ((floors / yr_built) - inv(1.0))))
+INFO: Evaluation time: 4.1677s
+INFO: Gen 13: Best Fitness 225921.0325 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) + ((floors / yr_built) / (1.0 * bedrooms))))
+INFO: Evaluation time: 4.7270s
+INFO: Gen 14: Best Fitness 218274.8281 Expr: (((exp(exp((bedrooms * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) + ((floors / (inv(yr_built) / exp((1.0 + bathrooms)))) / bedrooms)))
+INFO: Evaluation time: 4.8763s
+INFO: Gen 15: Best Fitness 218274.8281 Expr: (((exp(exp((bedrooms * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) + ((floors / (inv(yr_built) / exp((1.0 + bathrooms)))) / bedrooms)))
+INFO: Evaluation time: 4.9951s
+INFO: Gen 16: Best Fitness 217477.8099 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) * ((floors / (inv(yr_built) - inv((1.0 - bedrooms)))) / bedrooms)))
+INFO: Evaluation time: 4.8364s
+INFO: Gen 17: Best Fitness 217477.8099 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log(sqft_lot)) * ((floors / (inv(yr_built) - inv((1.0 - bedrooms)))) / bedrooms)))
+INFO: Evaluation time: 5.1665s
+INFO: Gen 18: Best Fitness 213631.1804 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + floors) / (yr_built - 1.0)) + ((sqft_lot / (floors / 1.0)) * (1.0 * bedrooms))))) * floors))
+INFO: Evaluation time: 4.9498s
+INFO: Gen 19: Best Fitness 213631.1804 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + floors) / (yr_built - 1.0)) + ((sqft_lot / (floors / 1.0)) * (1.0 * bedrooms))))) * floors))
+INFO: Evaluation time: 4.9112s
+INFO: Best 10 Genomes:
+INFO: Rank 1: Fitness 213550.5590 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + floors) / (yr_built - 1.0)) + ((sqft_lot / (floors / 1.0)) * (1.0 * floors))))) * floors))
+INFO: Rank 2: Fitness 213631.1804 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + floors) / (yr_built - 1.0)) + ((sqft_lot / (floors / 1.0)) * (1.0 * bedrooms))))) * floors))
+INFO: Rank 3: Fitness 214657.9096 Expr: (((exp(exp((bedrooms * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + (inv(floors) / yr_built)) - sin((1.0 + (bathrooms / bedrooms)))) / 1.0))) * floors))
+INFO: Rank 4: Fitness 214701.6825 Expr: (((exp(exp((1.0 * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * (log((((bedrooms * sqft_lot) + (floors + yr_built)) / 1.0)) * (bathrooms + bedrooms))) + (sqft_lot - 1.0)) - ((sqft_lot + yr_built) - bathrooms)))
+INFO: Rank 5: Fitness 214738.2957 Expr: (((exp(exp((sqft_lot * bathrooms))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + floors) / (yr_built - 1.0)) + ((sqft_lot / (floors / 1.0)) * (1.0 * bedrooms))))) * floors))
+INFO: Rank 6: Fitness 214738.2957 Expr: (((exp(exp((sqft_lot * bathrooms))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + floors) / (yr_built - 1.0)) + ((sqft_lot / (floors / 1.0)) * (1.0 * bedrooms))))) * floors))
+INFO: Rank 7: Fitness 215230.8598 Expr: (((exp(exp((1.0 * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * (log((((bedrooms * yr_built) + (floors + yr_built)) / 1.0)) * (bathrooms + bedrooms))) + (sqft_lot - 1.0)) - ((sqft_lot + yr_built) - bathrooms)))
+INFO: Rank 8: Fitness 216961.9722 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bedrooms) * log((((sqft_lot + floors) / (yr_built - 1.0)) + ((sqft_lot / (floors / 1.0)) * (1.0 / bedrooms))))) * floors))
+INFO: Rank 9: Fitness 217109.5682 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bathrooms) * log(((sqft_lot + floors) * yr_built))) - inv(1.0)))
+INFO: Rank 10: Fitness 217109.5849 Expr: (((exp(exp((sqft_lot * sqft_lot))) / exp(sin(1.0))) + sqft_living) + (((sqft_living * bathrooms) * log(((sqft_lot + floors) * yr_built))) - inv(yr_built)))
+INFO: 
+
+INFO: Fitness cache size: 20377
+INFO: Genome to expression cache size: 20377
+INFO: ================================================================================
+INFO: EVALUATING TOP 10 INDIVIDUALS ON TEST DATASET
+INFO: ================================================================================
+INFO: 
+================================================================================
+INFO: TEST SET EVALUATION SUMMARY
+INFO: ================================================================================
+INFO:   Test samples: 887
+INFO:   Best individual on test set: Rank 4
+INFO:   Test RMSE: 223667.9437
+INFO:   Average Absolute Error: $180256.36
+INFO: 
+Predictions (first 5): [np.float64(569637.5165648186), np.float64(678953.6025350512), np.float64(534389.1898857269), np.float64(577945.0943082698), np.float64(604932.4460603013)]
+INFO: Mean Absolute Error: 176738.91

@@ -1,5 +1,5 @@
 {
-    "generations": 10,
+    "generations": 100,
     "population_size": 1000,
     "genome_length": 100,
     "max_depth": 5,

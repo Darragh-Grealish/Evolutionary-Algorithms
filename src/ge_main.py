@@ -50,16 +50,22 @@ def run_ge(X, y, cfg):
                 c1g = mutate_genotype(c1['genotype'], max_depth=cfg.max_depth)
                 c2g = mutate_genotype(c2['genotype'], max_depth=cfg.max_depth)
 
-                while genome_to_tuple(c1g) in genome_set:
+                 # Try to find unique genome for c1, with max retries to prevent infinite loop
+                max_retries = 100
+                retries = 0
+                while genome_to_tuple(c1g) in genome_set and retries < max_retries:
                     c1g = mutate_genotype(c1g, max_depth=cfg.max_depth)
+                    retries += 1
+                
                 genome_set.add(genome_to_tuple(c1g))
                 new_pop.append({'genotype': c1g, 'phenotype': None, 'fitness': None})
                 
                 if len(new_pop) < cfg.population_size:
                     # Ensure c2g is unique - keep mutating until it is
-                    while genome_to_tuple(c2g) in genome_set:
+                    retries = 0
+                    while genome_to_tuple(c2g) in genome_set and retries < max_retries:
                         c2g = mutate_genotype(c2g, max_depth=cfg.max_depth)
-                    
+                        retries += 1
                     genome_set.add(genome_to_tuple(c2g))
                     new_pop.append({'genotype': c2g, 'phenotype': None, 'fitness': None})
             population = new_pop
