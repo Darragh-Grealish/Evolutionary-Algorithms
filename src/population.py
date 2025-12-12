@@ -26,15 +26,13 @@ def initialise_individual(grammar, start_nt, max_depth, rng=random):
     This aligns with DSGE where each non-terminal has its own gene list.
     """
     genotype = {nt: [] for nt in grammar.keys()}
-
     def expand(nt, depth):
         idx = choose_production(grammar, nt, depth, max_depth)
-        genotype[nt].append(idx)
+        genotype[nt].append(idx) # append index of rule chosen
         prod = grammar[nt][idx]
         for sym in prod:
             if sym in grammar: # recursively built out non-terminals
                 expand(sym, depth+1)
-
     expand(start_nt, 0)
     return genotype # genotype is dict of lists of production indices for each non-terminal
 

@@ -18,20 +18,19 @@ def crossover_genotypes(parent1, parent2, rng=random):
     if parent1 == None or parent2 == None:
         logger.error("Error: One of the parents is None")
 
-    for k in keys:
+    for gene in keys:
         take_from_p2 = rng.random() < 0.5  # mask bit for this gene
-        g1 = parent1.get(k, [])
-        g2 = parent2.get(k, [])
+        g1 = parent1.get(gene, [])
+        g2 = parent2.get(gene, [])
 
         if take_from_p2:
             # child1 takes P2's whole gene, child2 takes P1's
-            child1[k] = list(g2)
-            child2[k] = list(g1)
+            child1[gene] = list(g2)
+            child2[gene] = list(g1)
         else:
             # child1 takes P1's whole gene, child2 takes P2's
-            child1[k] = list(g1)
-            child2[k] = list(g2)
-
+            child1[gene] = list(g1)
+            child2[gene] = list(g2)
     return child1, child2
 
 def crossover_individuals(ind1, ind2, rng=random):
@@ -45,30 +44,21 @@ def crossover_individuals(ind1, ind2, rng=random):
     return child1, child2
 
 def mutate_genotype(genotype, max_depth, mutations=1, rng=random):
-    """
-    Multi-step mutation: perform `mutations` independent mutations.
-    Each mutation picks a (non-terminal, position) pair that hasn't been
-    mutated already, then assigns a new valid production index.
-    """
-    new_genotype = {nt: list(genes) for nt, genes in genotype.items()}
+    new_genotype = {nt: list(genes) for nt, genes in genotype.items()} # deep copy
 
     # Build list of all possible (non-terminal, position) candidates
     all_candidates = [(nt, pos) for nt, genes in new_genotype.items() for pos in range(len(genes))]
-
-    # Sample unique mutation targets
-    num = min(mutations, len(all_candidates))
+    num = min(mutations, len(all_candidates)) # incase user configs mutations > available genes
     chosen = rng.sample(all_candidates, num) # get gene and position pairs to mutate
 
-    for nt, pos in chosen:
-        genes = new_genotype[nt]
-        max_choices = len(GRAMMAR[nt])
+    for nt, pos in chosen: 
+        genes = new_genotype[nt] # get gene list for non-terminal
+        max_choices = len(GRAMMAR[nt]) # number of possible productions
 
-        old_idx = genes[pos]
-        new_idx = choose_production(GRAMMAR, nt, 0, max_depth)
+        old_idx = genes[pos] # current production index
+        new_idx = choose_production(GRAMMAR, nt, 0, max_depth) # new prod index
 
-        if new_idx == old_idx and max_choices > 1:
-            new_idx = (old_idx + 1) % max_choices
-
+        if new_idx == old_idx and max_choices > 1: # ensure a different rule choice
+            new_idx = (old_idx + 1) % max_choices 
         genes[pos] = new_idx
-
     return new_genotype
