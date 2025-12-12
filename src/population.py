@@ -100,16 +100,26 @@ def map_genotype(grammar, genotype, start_nt, max_depth, expression_cache=None, 
     return tree
 
 def initialise_population(config, start_nt="start", rng=random):
+   """
+    Create a list of individuals, each a dict:
+        { 'genotype': [...], 'phenotype': [...], 'fitness': None }
+    """
     population = []
+
     for _ in range(config.population_size):
-        # ... (same as your original code) ...
-        # Note: initialise_individual does not map genotype to phenotype, 
-        # so we don't need cache here yet.
         genotype = initialise_individual(
-            grammar=GRAMMAR, # Assuming GRAMMAR is imported or passed
+            grammar=GRAMMAR,
             start_nt=start_nt,
             max_depth=config.max_depth,
             rng=rng
         )
-        population.append({"genotype": genotype, "phenotype": None, "fitness": None})
+
+        individual = {
+            "genotype": genotype,
+            "phenotype": None,
+            "fitness": None
+        }
+
+        population.append(individual)
+
     return population
