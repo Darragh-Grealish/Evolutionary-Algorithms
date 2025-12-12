@@ -3,7 +3,6 @@ from multiprocessing import Pool, cpu_count
 from src.models import TreeNode
 from src.population import map_genotype, GRAMMAR
 
-fitness_cache = {} # map expression to fitness
 logger = logging.getLogger(__name__)
 
 EPS = 1e-10
@@ -25,38 +24,40 @@ def safe_div(a, b):
 
 def _eval_individual_wrapper(args):
     """Wrapper function for multiprocessing that unpacks arguments."""
-    individual, X, y, cfg = args
-    return eval_individual(individual, X, y, cfg)
+    individual, X, y, cfg, fit_cache, expr_cache = args
+    return eval_individual(individual, X, y, cfg, fit_cache, expr_cache)
 
-def evaluate_population(population, X, y, cfg):
+def evaluate_population(population, X, y, cfg, pool, fitness_cache, expression_cache):
     start = time.perf_counter()
-    with Pool(processes=cpu_count()) as pool:
-        # Create argument tuples for each individual
-        args_list = [(ind, X, y, cfg) for ind in population]
-        results = pool.map(_eval_individual_wrapper, args_list)
+    args_list = [
+        (ind, X, y, cfg, fitness_cache, expression_cache) 
+        for ind in population
+    ]
+    results = pool.map(_eval_individual_wrapper, args_list)
     logger.info("Evaluation time: %.4fs", time.perf_counter() - start)
     return results
 
-def eval_individual(individual, X, y, cfg):
+def eval_individual(individual, X, y, cfg, fit_cache, expr_cache):
     phenotype = map_genotype(
         grammar=GRAMMAR,
         genotype=individual['genotype'],
         start_nt="start",
         max_depth=cfg.max_depth,
+        expression_cache=expr_cache 
     )
 
     # cache key
     key = tuple((nt, tuple(individual['genotype'].get(nt, []))) 
                 for nt in sorted(GRAMMAR.keys()))
 
-    fit = fitness_cache.get(key) # check if already evaluated
+    fit = fit_cache.get(key) # check if already evaluated
     if fit is None:
         preds = np.array([
             eval_tree(phenotype, {k: s[i] for i, k in enumerate(cfg.feature_names)})
             for s in X
         ])
         fit = np.sqrt(np.mean((preds - y) ** 2))
-        fitness_cache[key] = fit
+        fit_cache[key] = fit
 
     return {
         "genotype": individual["genotype"],

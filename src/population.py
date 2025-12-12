@@ -5,8 +5,6 @@ from src.models import TreeNode, Grammar
 # Initialize grammar from BNF file
 GRAMMAR = Grammar(os.path.join(os.path.dirname(__file__), "grammar.bnf"))
 
-genome_to_expression_cache = {}
-
 def is_recursive(nt, prod):
     return nt in prod # return true is LHS is in RHS
 
@@ -36,7 +34,7 @@ def initialise_individual(grammar, start_nt, max_depth, rng=random):
     expand(start_nt, 0)
     return genotype # genotype is dict of lists of production indices for each non-terminal
 
-def map_genotype(grammar, genotype, start_nt, max_depth, rng=random):
+def map_genotype(grammar, genotype, start_nt, max_depth, expression_cache=None, rng=random):
     """
     Map a genotype (list of production indices) to a phenotype tree (TreeNode).
     The grammar determines arity: 'op' is binary, 'pre_op' is unary, 'var' and literals are terminals.
@@ -46,11 +44,10 @@ def map_genotype(grammar, genotype, start_nt, max_depth, rng=random):
 
     # key for cache is tuple of all non-terminals and their production indices
     key = tuple((nt, tuple(genotype.get(nt, []))) for nt in sorted(grammar.keys()))
-    if key in genome_to_expression_cache: # we have already mapped this genotype
-        return genome_to_expression_cache[key]
+    if expression_cache is not None and key in expression_cache: # we have already mapped this genotype
+        return expression_cache[key]
 
     def expand(nt, depth):
-
         prods = grammar[nt] # get productions for this non-terminal
         cur = cursors[nt]   # current read position in gene list for this non-terminal (this tells us what rule to choose)
         if cur < len(genotype.get(nt, [])):
@@ -77,77 +74,42 @@ def map_genotype(grammar, genotype, start_nt, max_depth, rng=random):
         if nt == "expr":
             # Handle parenthesized binary
             if len(nodes) == 5 and nodes[0].symbol == "(" and nodes[4].symbol == ")":
-                left = nodes[1]
-                op = nodes[2]
-                right = nodes[3]
-                return TreeNode(op.symbol, [left, right])
-
-            # Handle unary pre_op with parentheses
+                return TreeNode(nodes[2].symbol, [nodes[1], nodes[3]])
             if len(nodes) == 4 and nodes[1].symbol == "(" and nodes[3].symbol == ")":
-                pre = nodes[0]
-                arg = nodes[2]
-                return TreeNode(pre.symbol, [arg])
-
-            # Handle direct binary: expr op expr
+                return TreeNode(nodes[0].symbol, [nodes[2]])
             if len(nodes) == 3 and nodes[1].symbol in ['+', '-', '*', '/']:
-                left = nodes[0]
-                op = nodes[1]
-                right = nodes[2]
-                return TreeNode(op.symbol, [left, right])
-
-            # Handle var
+                return TreeNode(nodes[1].symbol, [nodes[0], nodes[2]])
             if len(nodes) == 1:
                 return nodes[0]
-
-            # Fallback: create a sequence node
             return TreeNode("seq", nodes)
 
-        if nt == "op":
-            # op produces a single terminal operator
+        if nt == "op" or nt == "pre_op" or nt == "var":
             return nodes[0]
-
-        if nt == "pre_op":
-            # pre_op produces a single terminal pre-operator
-            return nodes[0]
-
-        if nt == "var":
-            # var produces a single terminal variable/literal
-            return nodes[0]
-
         if nt == "start":
-            # start -> expr, unwrap to return the expression tree directly
             return nodes[0] if nodes else TreeNode("seq", [])
 
-        # Default: pack nodes as sequence
         return TreeNode(nt, nodes)
 
     tree = expand(start_nt, 0)
-    # cache using the final, possibly-extended genotype
+    
+    # Update shared cache
     final_key = tuple((nt, tuple(genotype.get(nt, []))) for nt in sorted(grammar.keys()))
-    genome_to_expression_cache[final_key] = tree
+    if expression_cache is not None:
+        expression_cache[final_key] = tree
+        
     return tree
 
 def initialise_population(config, start_nt="start", rng=random):
-    """
-    Create a list of individuals, each a dict:
-        { 'genotype': [...], 'phenotype': [...], 'fitness': None }
-    """
     population = []
-
     for _ in range(config.population_size):
+        # ... (same as your original code) ...
+        # Note: initialise_individual does not map genotype to phenotype, 
+        # so we don't need cache here yet.
         genotype = initialise_individual(
-            grammar=GRAMMAR,
+            grammar=GRAMMAR, # Assuming GRAMMAR is imported or passed
             start_nt=start_nt,
             max_depth=config.max_depth,
             rng=rng
         )
-
-        individual = {
-            "genotype": genotype,
-            "phenotype": None,
-            "fitness": None
-        }
-
-        population.append(individual)
-
+        population.append({"genotype": genotype, "phenotype": None, "fitness": None})
     return population
