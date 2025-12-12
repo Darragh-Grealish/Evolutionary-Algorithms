@@ -100,7 +100,7 @@ def map_genotype(grammar, genotype, start_nt, max_depth, expression_cache=None, 
     return tree
 
 def initialise_population(config, start_nt="start", rng=random):
-   """
+    """
     Create a list of individuals, each a dict:
         { 'genotype': [...], 'phenotype': [...], 'fitness': None }
     """
