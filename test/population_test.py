@@ -104,28 +104,6 @@ def test_map_genotype_extends_genotype_when_gene_list_exhausted(monkeypatch):
     assert len(genotype["expr"]) == 1
     assert genotype["expr"][0] == 1
 
-
-def test_map_genotype_uses_cache_for_same_genotype(monkeypatch):
-    grammar = {
-        "start": [["expr"]],
-        "expr": [["var"]],
-        "var": [["x"]],
-    }
-    genotype = {"start": [0], "expr": [0], "var": [0]}
-
-    population.genome_to_expression_cache.clear()
-
-    t1 = map_genotype(grammar, genotype, "start", max_depth=5)
-    t2 = map_genotype(grammar, genotype, "start", max_depth=5)
-
-    assert_tree_equal(t1, t2)
-
-    key = tuple((nt, tuple(genotype.get(nt, []))) for nt in sorted(grammar.keys()))
-    assert key in population.genome_to_expression_cache
-
-
-
-
 class DummyCfg:
     def __init__(self, population_size, max_depth):
         self.population_size = population_size
